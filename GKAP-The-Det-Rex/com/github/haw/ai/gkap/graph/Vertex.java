@@ -7,4 +7,8 @@ package com.github.haw.ai.gkap.graph;
  */
 public interface Vertex<V> {
 
+  /**
+   * @return the content of an edge
+   */
+  public V content();
 }
