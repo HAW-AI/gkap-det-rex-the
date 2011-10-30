@@ -17,6 +17,8 @@ public interface Edge<E,V> {
     public Collection<Vertex<V>> vertices();
 
     /**
+     * @param  from the vertex to find the way from
+     * @param  to   the vertex to find the way to
      * @return true if the vertex 'to' is reachable from the vertex 'from'
      *         through the edge - otherwise false
      */
