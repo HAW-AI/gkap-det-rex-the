@@ -14,7 +14,7 @@ public interface Edge<E,V> {
     /**
      * @return the vertices connected by the edge
      */
-    public Collection<vertices<V>> vertices();
+    public Collection<Vertex<V>> vertices();
 
     /**
      * @return true if the vertex 'to' is reachable from the vertex 'from'
