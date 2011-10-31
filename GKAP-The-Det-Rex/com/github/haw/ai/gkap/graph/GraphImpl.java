@@ -49,8 +49,15 @@ public class GraphImpl<E, V> implements Graph<E, V> {
 
 	@Override
 	public Set<Vertex<V>> adjacent(Vertex<V> vertex) {
-		// TODO Auto-generated method stub
-		return null;
+    Set<Vertex<V>> result = new HashSet<Vertex<V>>();
+
+    for (Vertex<V> v : vertices) {
+      if (isAdjacent(v, vertex) {
+        result.add(v);
+      }
+    }
+
+    return result;
 	}
 
 	@Override
