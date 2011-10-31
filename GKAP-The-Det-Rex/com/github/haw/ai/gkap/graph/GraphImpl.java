@@ -49,22 +49,21 @@ public class GraphImpl<E, V> implements Graph<E, V> {
 
 	@Override
 	public Set<Vertex<V>> adjacent(Vertex<V> vertex) {
-    Set<Vertex<V>> result = new HashSet<Vertex<V>>();
+		Set<Vertex<V>> result = new HashSet<Vertex<V>>();
+		for (Vertex<V> v : vertices) {
+			if (isAdjacent(v, vertex)) {
+				result.add(v);
+			}
+		}
 
-    for (Vertex<V> v : vertices) {
-      if (isAdjacent(v, vertex) {
-        result.add(v);
-      }
-    }
-
-    return result;
+		return result;
 	}
 
 	@Override
-	public Set<Edge<E,V>> incident(Vertex<V> vertex) {
-	    Set<Edge<E,V>> result = new HashSet<Edge<E,V>>();
-		for (Edge<E,V> edge : edges) {
-			if (isIncident(vertex,edge)) {
+	public Set<Edge<E, V>> incident(Vertex<V> vertex) {
+		Set<Edge<E, V>> result = new HashSet<Edge<E, V>>();
+		for (Edge<E, V> edge : edges) {
+			if (isIncident(vertex, edge)) {
 				result.add(edge);
 			}
 		}
