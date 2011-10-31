@@ -38,8 +38,15 @@ public class GraphImpl<E,V> implements Graph<E, V> {
 	}
 
 	@Override
-	public Set<Edge<E, V>> incident(Vertex<V> vertex, Edge<E, V> edge) {
-		// TODO Auto-generated method stub
-		return null;
+	public Set<Edge<E, V>> incident(Vertex<V> vertex) {
+    Set<Edge<E, V> result = new HashSet<Edge<E,V>();
+
+    for (Edge<E,V> edge : edges) {
+      if (isIncident(vertex,edge) {
+        result.add(edge);
+      }
+    }
+
+    return result;
 	}
 }
