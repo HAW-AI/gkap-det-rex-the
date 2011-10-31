@@ -12,15 +12,15 @@ public interface Graph<E,V> {
   /**
    * @return the degree of a given Vertex
    */
-  public int degree(Vertex<V>);
+  public int degree(Vertex<V> vertex);
 
   /**
    * @return the Set of Vertices that are adjacent to the given Vertex
    */
-  public Set<Vertex<V>> adjacent(Vertex<V>);
+  public Set<Vertex<V>> adjacent(Vertex<V> vertex);
 
   /**
    * @return the Set of Edges that are incident with the given Vertex
    */
-  public Set<Edge<T>> incident(Vertex<V>);
+  public Set<Edge<E,V>> incident(Vertex<V> vertex);
 }
