@@ -7,11 +7,27 @@ import java.util.Set;
  * @author Patrick Detlefsen <patrick.detlefsen@haw-hamburg.de>
  * @author Benjamin Rexin <benjamin.rexin@haw-hamburg.de>
  */
-public class GraphImpl<E, V> implements Graph<E, V> {
+public class GraphImpl<E,V> implements Graph<E, V> {
 	public static Graph<E,V> valueOf(Set<Edge<E,V>> edges, Set<Vertex<V>> vertices) {
-		return new GraphImpl<E, V>(edges, vertices);
+		return new GraphImpl<E,V>(edges, vertices);
 	}
 	private GraphImpl(Set<Edge<E,V>> edges, Set<Vertex<V>> vertices) {
 		
+	}
+	
+	@Override
+	public int degree(Vertex<V> vertex) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	@Override
+	public Set<Vertex<V>> adjacent(Vertex<V> vertex) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public Set<Edge<E, V>> incident(Vertex<V> vertex) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
