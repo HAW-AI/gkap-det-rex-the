@@ -1,5 +1,7 @@
 package com.github.haw.ai.gkap.graph;
 
+import java.util.Collection;
+
 /**
  * @author Till Theis <till.theis@haw-hamburg.de>
  * @author Patrick Detlefsen <patrick.detlefsen@haw-hamburg.de>
