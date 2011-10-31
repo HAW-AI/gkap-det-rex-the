@@ -30,12 +30,12 @@ public class UndirectedEdgeTest {
         c5 = "";
         c6 = "hans";
         
-        v1 = Vertex.valueOf(c1);
-        v2 = Vertex.valueOf(c2);
-        v3 = Vertex.valueOf(c3);
+        v1 = vertex(c1);
+        v2 = vertex(c2);
+        v3 = vertex(c3);
 
-        v4 = Vertex.valueOf(c5);
-        v5 = Vertex.valueOf(c6);
+        v4 = vertex(c5);
+        v5 = vertex(c6);
         
         e1 = undirectedEdge(v1, v2, c2);
         e2 = undirectedEdge(v2, v3, c1);

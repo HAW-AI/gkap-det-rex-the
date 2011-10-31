@@ -6,6 +6,10 @@ public class Graphs {
     }
     
     public static <E, V> Edge<E, V> undirectedEdge(Vertex<V> left, Vertex<V> right, E content) {
-        return UndirectedEdge.valueOf(left, right, content);
+        return new UndirectedEdge<E, V>(left, right, content);
+    }
+    
+    public static <V> Vertex<V> vertex(V content) {
+    	return new VertexImpl<V>(content);
     }
 }

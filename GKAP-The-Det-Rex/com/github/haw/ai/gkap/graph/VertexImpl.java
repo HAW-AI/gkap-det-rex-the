@@ -8,7 +8,7 @@ package com.github.haw.ai.gkap.graph;
 public class VertexImpl<V> implements Vertex<V> {
 	private V content;
 
-	private VertexImpl(V content) {
+	public VertexImpl(V content) {
 		this.content = content;
 	}
 
