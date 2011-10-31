@@ -22,5 +22,5 @@ public interface Graph<E,V> {
   /**
    * @return the Set of Edges that are incident with the given Vertex
    */
-  public Set<Edge<E,V>> incident(Vertex<V> vertex, Edge<E> edge);
+  public Set<Edge<E,V>> incident(Vertex<V> vertex, Edge<E,V> edge);
 }

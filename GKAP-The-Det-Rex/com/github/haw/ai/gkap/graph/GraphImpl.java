@@ -21,12 +21,12 @@ public class GraphImpl<E,V> implements Graph<E, V> {
 		return 0;
 	}
 	@Override
-	public Set<Vertex<V>> adjacent(Vertex<V> vertex) {
+	public Set<Vertex<V>> adjacent(Vertex<V> vertex, Vertex<V> otherVertex) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	@Override
-	public Set<Edge<E, V>> incident(Vertex<V> vertex) {
+	public Set<Edge<E, V>> incident(Vertex<V> vertex, Edge<E, V> edge) {
 		// TODO Auto-generated method stub
 		return null;
 	}
