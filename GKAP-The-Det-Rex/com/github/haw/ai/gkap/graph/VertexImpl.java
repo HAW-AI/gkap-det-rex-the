@@ -12,7 +12,7 @@ public class VertexImpl<V> implements Vertex<V> {
     this.content = content;
   }
 
-  public Vertex<V> valueOf(V content) {
+  public static Vertex<V> valueOf(V content) {
 		return new VertexImpl<V>(content);
 	}
   public V content() {
