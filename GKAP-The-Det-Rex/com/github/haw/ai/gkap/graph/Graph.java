@@ -15,12 +15,22 @@ public interface Graph<E,V> {
   public int degree(Vertex<V> vertex);
 
   /**
+   * @return true if the two given vertices are adjacent
+   */
+  public boolean isAdjacent(Vertex<V> vertex, Vertex<V> otherVertex);
+
+  /**
    * @return the Set of Vertices that are adjacent to the given Vertex
    */
-  public Set<Vertex<V>> adjacent(Vertex<V> vertex, Vertex<V> otherVertex);
+  public Set<Vertex<V>> adjacent(Vertex<V> vertex);
+
+  /**
+   * @return true if the vertex is incident to the given edge
+   */
+  public boolean isIncident(Vertex<V> vertex, Edge<E,V> edge);
 
   /**
    * @return the Set of Edges that are incident with the given Vertex
    */
-  public Set<Edge<E,V>> incident(Vertex<V> vertex, Edge<E,V> edge);
+  public Set<Edge<E,V>> incident(Vertex<V> vertex);
 }
