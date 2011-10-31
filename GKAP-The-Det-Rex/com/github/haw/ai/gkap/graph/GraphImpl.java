@@ -7,38 +7,54 @@ import java.util.Set;
  * @author Patrick Detlefsen <patrick.detlefsen@haw-hamburg.de>
  * @author Benjamin Rexin <benjamin.rexin@haw-hamburg.de>
  */
-public class GraphImpl<E,V> implements Graph<E, V> {
-	public static <E,V> Graph<E,V> valueOf(Set<Edge<E,V>> edges, Set<Vertex<V>> vertices) {
-		return new GraphImpl<E,V>(edges, vertices);
+public class GraphImpl<E, V> implements Graph<E, V> {
+	public static <E, V> Graph<E, V> valueOf(Set<Edge<E, V>> edges,
+			Set<Vertex<V>> vertices) {
+		return new GraphImpl<E, V>(edges, vertices);
 	}
-	private GraphImpl(Set<Edge<E,V>> edges, Set<Vertex<V>> vertices) {
-		
+
+	private Set<Edge<E, V>> edges;
+	private Set<Vertex<V>> vertices;
+
+	private GraphImpl(Set<Edge<E, V>> edges, Set<Vertex<V>> vertices) {
+		this.edges = edges;
+		this.vertices = vertices;
 	}
-	
+
 	@Override
 	public int degree(Vertex<V> vertex) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
 	@Override
 	public boolean isAdjacent(Vertex<V> vertex, Vertex<V> otherVertex) {
-    for (Edge<E,V> e : edges) {
-      if (e.vertices().contains(vertex) && e.vertices().contains(otherVertex)) {
-        return true;
-      }
-      return false;
-    }
+		for (Edge<E, V> e : edges) {
+			if (e.vertices().contains(vertex)
+					&& e.vertices().contains(otherVertex)) {
+				return true;
+			}
+		}
+		return false;
 	}
+
 	@Override
 	public boolean isIncident(Vertex<V> vertex, Edge<E, V> edge) {
-    if (edge.vertices().contains(vertex)) {
-      return true;
-    }
-    return false;
+		if (edge.vertices().contains(vertex)) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public Set<Vertex<V>> adjacent(Vertex<V> vertex) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	public Set<Edge<E, V>> incident(Vertex<V> vertex) {
+<<<<<<< HEAD
     Set<Edge<E, V> result = new HashSet<Edge<E,V>();
 
     for (Edge<E,V> edge : edges) {
@@ -48,5 +64,9 @@ public class GraphImpl<E,V> implements Graph<E, V> {
     }
 
     return result;
+=======
+		// TODO Auto-generated method stub
+		return null;
+>>>>>>> 65bf74dc9e5b1d1218da5d7d343f2b92d18c7a3c
 	}
 }
