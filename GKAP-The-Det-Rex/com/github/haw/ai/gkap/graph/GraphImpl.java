@@ -54,7 +54,6 @@ public class GraphImpl<E, V> implements Graph<E, V> {
 
 	@Override
 	public Set<Edge<E, V>> incident(Vertex<V> vertex) {
-<<<<<<< HEAD
     Set<Edge<E, V> result = new HashSet<Edge<E,V>();
 
     for (Edge<E,V> edge : edges) {
@@ -64,9 +63,7 @@ public class GraphImpl<E, V> implements Graph<E, V> {
     }
 
     return result;
-=======
 		// TODO Auto-generated method stub
 		return null;
->>>>>>> 65bf74dc9e5b1d1218da5d7d343f2b92d18c7a3c
 	}
 }
