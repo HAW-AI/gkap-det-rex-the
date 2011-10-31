@@ -1,6 +1,8 @@
 package com.github.haw.ai.gkap.graph;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -24,8 +26,13 @@ public class GraphImpl<E, V> implements Graph<E, V> {
 
 	@Override
 	public int degree(Vertex<V> vertex) {
-		// TODO Auto-generated method stub
-		return 0;
+		List<Edge<E,V>> list = new ArrayList<Edge<E,V>>();
+		for (Edge<E,V> edge : edges) {
+			if (isIncident(vertex, edge)) {
+				list.add(edge);
+			}
+		}
+		return list.size();
 	}
 
 	@Override
