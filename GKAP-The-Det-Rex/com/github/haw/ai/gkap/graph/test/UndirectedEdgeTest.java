@@ -1,15 +1,16 @@
-import static org.junit.Assert.*;
+package com.github.haw.ai.gkap.graph.test;
 
+/**
+ * @author Till Theis <till.theis@haw-hamburg.de>
+ */
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
-
 import com.github.haw.ai.gkap.graph.*;
 import static com.github.haw.ai.gkap.graph.Graphs.*;
-
 import static java.util.Arrays.asList;
 
-
-public class DirectedEdgeTest {
+public class UndirectedEdgeTest {
     Integer c1, c2, c3, c4;
     String c5, c6;
     
@@ -29,20 +30,20 @@ public class DirectedEdgeTest {
         c5 = "";
         c6 = "hans";
         
-        v1 = vertex(c1);
-        v2 = vertex(c2);
-        v3 = vertex(c3);
+        v1 = Vertex.valueOf(c1);
+        v2 = Vertex.valueOf(c2);
+        v3 = Vertex.valueOf(c3);
 
-        v4 = vertex(c5);
-        v5 = vertex(c6);
+        v4 = Vertex.valueOf(c5);
+        v5 = Vertex.valueOf(c6);
         
-        e1 = directedEdge(v1, v2, c2);
-        e2 = directedEdge(v2, v3, c1);
-        e3 = directedEdge(v3, v1, c3);
+        e1 = undirectedEdge(v1, v2, c2);
+        e2 = undirectedEdge(v2, v3, c1);
+        e3 = undirectedEdge(v3, v1, c3);
 
-        e4 = directedEdge(v4, v5, c2);
-        e5 = directedEdge(v5, v4, c4);
-        e6 = directedEdge(v4, v4, c4);
+        e4 = undirectedEdge(v4, v5, c2);
+        e5 = undirectedEdge(v5, v4, c4);
+        e6 = undirectedEdge(v4, v4, c4);
     }
     
     @Test
@@ -81,17 +82,17 @@ public class DirectedEdgeTest {
         assertTrue(e4.isReachable(v4, v5));
         assertTrue(e5.isReachable(v5, v4));
         
+        assertTrue(e1.isReachable(v2, v1));
+        assertTrue(e2.isReachable(v3, v2));
+        assertTrue(e3.isReachable(v1, v3));
+        assertTrue(e4.isReachable(v5, v4));
+        assertTrue(e5.isReachable(v4, v5));
+        
         assertTrue(e6.isReachable(v4, v4));
     }
     
     @Test
     public void testIsReachableNegative() {
-        assertFalse(e1.isReachable(v2, v1));
-        assertFalse(e2.isReachable(v3, v2));
-        assertFalse(e3.isReachable(v1, v3));
-        assertFalse(e4.isReachable(v5, v4));
-        assertFalse(e5.isReachable(v4, v5));
-
         assertFalse(e1.isReachable(v2, v3));
         assertFalse(e2.isReachable(v1, v2));
         assertFalse(e3.isReachable(v2, v2));
