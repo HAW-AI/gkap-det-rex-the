@@ -1,5 +1,6 @@
 package com.github.haw.ai.gkap.graph;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -53,15 +54,13 @@ public class GraphImpl<E, V> implements Graph<E, V> {
 	}
 
 	@Override
-	public Set<Edge<E, V>> incident(Vertex<V> vertex) {
-    Set<Edge<E, V> result = new HashSet<Edge<E,V>();
-
-    for (Edge<E,V> edge : edges) {
-      if (isIncident(vertex,edge) {
-        result.add(edge);
-      }
-    }
-
-    return result;
+	public Set<Edge<E,V>> incident(Vertex<V> vertex) {
+	    Set<Edge<E,V>> result = new HashSet<Edge<E,V>>();
+		for (Edge<E,V> edge : edges) {
+			if (isIncident(vertex,edge)) {
+				result.add(edge);
+			}
+		}
+		return result;
 	}
 }
