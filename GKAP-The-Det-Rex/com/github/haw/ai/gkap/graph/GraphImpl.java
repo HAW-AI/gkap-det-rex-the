@@ -63,7 +63,5 @@ public class GraphImpl<E, V> implements Graph<E, V> {
     }
 
     return result;
-		// TODO Auto-generated method stub
-		return null;
 	}
 }
