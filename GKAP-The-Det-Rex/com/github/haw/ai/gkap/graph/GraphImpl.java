@@ -21,10 +21,22 @@ public class GraphImpl<E,V> implements Graph<E, V> {
 		return 0;
 	}
 	@Override
-	public Set<Vertex<V>> adjacent(Vertex<V> vertex, Vertex<V> otherVertex) {
-		// TODO Auto-generated method stub
-		return null;
+	public boolean isAdjacent(Vertex<V> vertex, Vertex<V> otherVertex) {
+    for (Edge<E,V> e : edges) {
+      if (e.vertices().contains(vertex) && e.vertices().contains(otherVertex)) {
+        return true;
+      }
+      return false;
+    }
 	}
+	@Override
+	public boolean isIncident(Vertex<V> vertex, Edge<E, V> edge) {
+    if (edge.vertices().contains(vertex)) {
+      return true;
+    }
+    return false;
+	}
+
 	@Override
 	public Set<Edge<E, V>> incident(Vertex<V> vertex, Edge<E, V> edge) {
 		// TODO Auto-generated method stub
