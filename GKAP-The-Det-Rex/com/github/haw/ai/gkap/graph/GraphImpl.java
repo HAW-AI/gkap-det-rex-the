@@ -8,7 +8,7 @@ import java.util.Set;
  * @author Benjamin Rexin <benjamin.rexin@haw-hamburg.de>
  */
 public class GraphImpl<E,V> implements Graph<E, V> {
-	public static Graph<E,V> valueOf(Set<Edge<E,V>> edges, Set<Vertex<V>> vertices) {
+	public static <E,V> Graph<E,V> valueOf(Set<Edge<E,V>> edges, Set<Vertex<V>> vertices) {
 		return new GraphImpl<E,V>(edges, vertices);
 	}
 	private GraphImpl(Set<Edge<E,V>> edges, Set<Vertex<V>> vertices) {
