@@ -76,4 +76,9 @@ public class GraphImpl<E, V> implements Graph<E, V> {
 		}
 		return result;
 	}
+	
+	@Override
+	public String toString() {
+	    return "G(" + vertices.toString() + ", " + edges.toString() + ")";
+	}
 }

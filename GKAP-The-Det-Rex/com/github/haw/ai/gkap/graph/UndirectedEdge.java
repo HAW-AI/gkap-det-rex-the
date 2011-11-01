@@ -15,6 +15,11 @@ public class UndirectedEdge<E, V> extends AbstractEdge<E, V> {
 		// equal vertices
 		return (from == left() && to == right()) || (from == right() && to == left());
 	}
+	
+	@Override
+	public String toString() {
+	    return "[" + left().toString() + ", " + right().toString() + "]";
+	}
 
 	// inheritted hashCode() and equals()
 }

@@ -48,4 +48,9 @@ public class VertexImpl<V> implements Vertex<V> {
 		}
 		return true;
 	}
+	
+	@Override
+	public String toString() {
+	    return content().toString();
+	}
 }
