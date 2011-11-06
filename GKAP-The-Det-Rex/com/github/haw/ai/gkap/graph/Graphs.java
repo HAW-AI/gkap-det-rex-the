@@ -10,6 +10,6 @@ public class Graphs {
     }
     
     public static <V> Vertex<V> vertex(V content) {
-    	return new VertexImpl<V>(content);
+    	return VertexImpl.valueOf(content);
     }
 }

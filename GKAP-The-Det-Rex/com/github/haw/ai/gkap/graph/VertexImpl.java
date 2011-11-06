@@ -8,7 +8,10 @@ package com.github.haw.ai.gkap.graph;
 public class VertexImpl<V> implements Vertex<V> {
 	private V content;
 
-	public VertexImpl(V content) {
+	private VertexImpl(V content) {
+		if (content == null) {
+			throw new NullPointerException();
+		}
 		this.content = content;
 	}
 
