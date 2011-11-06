@@ -27,7 +27,7 @@ public class UndirectedEdge<E, V> extends AbstractEdge<E, V> {
 	
 	@Override
 	public String toString() {
-	    return "[" + left().toString() + ", " + right().toString() + "]";
+	    return content() + "(" + left() + "-" + right() + ")";
 	}
 
 
