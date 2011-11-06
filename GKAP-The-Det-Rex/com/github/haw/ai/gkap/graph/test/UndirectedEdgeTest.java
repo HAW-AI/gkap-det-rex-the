@@ -18,7 +18,7 @@ public class UndirectedEdgeTest {
     Vertex<String> v4, v5;
     
     Edge<Integer, Integer> e1, e2, e3;
-    Edge<Integer, String> e4, e5, e6;
+    Edge<Integer, String> e4, e5, e6, e7;
     
     @Before
     public void setUp() {
@@ -44,6 +44,7 @@ public class UndirectedEdgeTest {
         e4 = undirectedEdge(v4, v5, c2);
         e5 = undirectedEdge(v5, v4, c4);
         e6 = undirectedEdge(v4, v4, c4);
+        e7 = undirectedEdge(v5, v4, c2);
     }
     
     @Test
@@ -96,6 +97,15 @@ public class UndirectedEdgeTest {
         assertFalse(e1.isReachable(v2, v3));
         assertFalse(e2.isReachable(v1, v2));
         assertFalse(e3.isReachable(v2, v2));
+    }
+    
+    @Test
+    public void testEquality() {
+        assertTrue(e4.equals(e7));
+        assertTrue(e7.equals(e4));
+        
+        assertFalse(e4.equals(e5));
+        assertFalse(e5.equals(e4));
     }
 
 }
