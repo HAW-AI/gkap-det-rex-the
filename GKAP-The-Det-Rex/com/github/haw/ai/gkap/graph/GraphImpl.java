@@ -140,6 +140,10 @@ public class GraphImpl<E, V> implements Graph<E, V> {
 	    return s;
 	}
 
+	/**
+	 * @return a Map with the vertices as its keys and the reachable neighbor
+	 *         vertices as its values (a subset of the actual adjacence set)
+	 */
 	public Map<Vertex<V>, Set<Edge<E, V>>> adjacenceMap() {
 	    // caching
         
