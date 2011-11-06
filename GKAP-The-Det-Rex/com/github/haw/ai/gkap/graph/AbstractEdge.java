@@ -1,6 +1,8 @@
 package com.github.haw.ai.gkap.graph;
 
-import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+
 import static java.util.Arrays.asList;
 
 /**
@@ -14,6 +16,7 @@ abstract public class AbstractEdge<E,V> implements Edge<E,V>{
     private Vertex<V> right;
 
     protected AbstractEdge(Vertex<V> left, Vertex<V> right, E content) {
+        
         this.left    = left;
         this.right   = right;
         this.content = content;
@@ -25,10 +28,8 @@ abstract public class AbstractEdge<E,V> implements Edge<E,V>{
     }
 
     @Override
-    public Collection<Vertex<V>> vertices() {
-        // don't use Set to return two elements even if they are structurally
-        // equal
-        return asList(left, right);
+    public Set<Vertex<V>> vertices() {
+        return new HashSet<Vertex<V>>(asList(left, right));
     }
 
 

@@ -1,6 +1,6 @@
 package com.github.haw.ai.gkap.graph;
 
-import java.util.Collection;
+import java.util.Set;
 
 /**
  * @author Till Theis <till.theis@haw-hamburg.de>
@@ -16,7 +16,7 @@ public interface Edge<E,V> {
     /**
      * @return the vertices connected by the edge
      */
-    public Collection<Vertex<V>> vertices();
+    public Set<Vertex<V>> vertices();
 
     /**
      * @param  from the vertex to find the way from

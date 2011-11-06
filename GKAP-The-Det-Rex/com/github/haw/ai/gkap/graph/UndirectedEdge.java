@@ -11,9 +11,7 @@ public class UndirectedEdge<E, V> extends AbstractEdge<E, V> {
 	}
 
 	public boolean isReachable(Vertex<V> from, Vertex<V> to) {
-		// compare identity because the graph may contain many structurally
-		// equal vertices
-		return (from == left() && to == right()) || (from == right() && to == left());
+		return (left().equals(from) && right().equals(to)) || (right().equals(from) && left().equals(to));
 	}
 	
 	@Override
