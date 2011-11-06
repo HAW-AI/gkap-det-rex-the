@@ -36,8 +36,23 @@ abstract public class AbstractEdge<E,V> implements Edge<E,V>{
     }
 
 
-    protected Vertex<V> left() { return left; }
-    protected Vertex<V> right() { return right; }
+    @Override
+    public Vertex<V> left() { return left; }
+    
+    @Override
+    public Vertex<V> right() { return right; }
+    
+    @Override
+    public Vertex<V> otherVertex(Vertex<V> oneSide) {
+        if (!this.vertices().contains(oneSide)){
+            throw new IllegalArgumentException();
+        }
+        if(this.left().equals(oneSide)) {
+            return this.right();
+        } else {
+            return this.left();
+        }
+    }
 
 
     @Override

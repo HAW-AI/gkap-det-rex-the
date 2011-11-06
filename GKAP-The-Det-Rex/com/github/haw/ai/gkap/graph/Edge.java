@@ -25,4 +25,9 @@ public interface Edge<E,V> {
      *         through the edge - otherwise false
      */
     public boolean isReachable(Vertex<V> from, Vertex<V> to);
+    
+    public Vertex<V> left();
+    public Vertex<V> right();
+    
+    public Vertex<V> otherVertex(Vertex<V> v);
 }

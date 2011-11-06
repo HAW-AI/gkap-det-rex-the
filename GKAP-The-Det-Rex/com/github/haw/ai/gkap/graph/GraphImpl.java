@@ -1,8 +1,10 @@
 package com.github.haw.ai.gkap.graph;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -82,6 +84,68 @@ public class GraphImpl<E, V> implements Graph<E, V> {
 	
 	@Override
 	public String toString() {
-	    return "G(" + vertices.toString() + ", " + edges.toString() + ")";
+	    if (vertices.size() == 0) {
+	        return "EmptyGraph";
+	    } else {
+	        return toString(vertices.iterator().next(), new HashSet<Vertex<V>>(), 0);
+	    }
+	}
+
+	public String toString(Vertex<V> root, Set<Vertex<V>> visited, int depth) {
+	    if (visited.contains(root)) {
+	        return "";
+	    }
+	    
+	    Set<Edge<E, V>> adjacent = adjacenceMap().get(root);
+	    Set<Vertex<V>> newVisited = new HashSet<Vertex<V>>(visited);
+	    newVisited.add(root);
+	    String s = "";
+	    String indentation = "";
+	    
+	    for (int i = 0; i < depth; ++i) {
+	        indentation += " ";
+	    }
+	    
+	    for (Edge<E,V> edge : adjacent) {
+	        if (edge.vertices().size() == 1) {
+	            // loop
+	            s += indentation + root + "-" + edge + "\n";
+	        } else {
+	            s += indentation + root + "-" + edge + " " + toString(edge.otherVertex(root), newVisited, depth+1) + "\n";
+	        }
+	    }
+	    
+	    return s;
+	}
+
+	public Map<Vertex<V>, Set<Edge<E, V>>> adjacenceMap() {
+	    // caching
+	    Map<Vertex<V>, Set<Edge<E, V>>> result = new HashMap<Vertex<V>, Set<Edge<E, V>>>();
+	    for (Edge<E, V> edge : edges) {
+	        Set<Vertex<V>> vertices = edge.vertices();
+	        if (vertices.size() == 1) {
+	            // loop
+	            checkAndSet(result, edge.left(), new HashSet<Edge<E,V>>());
+	            result.get(edge.left()).add(edge);
+	        } else {
+	            if (edge.isReachable(edge.left(), edge.right())) {
+	                checkAndSet(result, edge.left(), new HashSet<Edge<E,V>>());
+	                result.get(edge.left()).add(edge);
+	            }
+	            
+	            if (edge.isReachable(edge.right(), edge.left())) {
+	                checkAndSet(result, edge.right(), new HashSet<Edge<E,V>>());
+	                result.get(edge.right()).add(edge);
+	            }
+	        }
+	    }
+	    
+	    return result;
+	}
+	
+	private <K, Val> void checkAndSet(Map<K, Val> map, K key, Val defaultValue) {
+	    if (!map.containsKey(key)) {
+	        map.put(key, defaultValue);
+	    }
 	}
 }
