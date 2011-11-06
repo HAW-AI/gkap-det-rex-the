@@ -20,6 +20,9 @@ public class GraphImpl<E, V> implements Graph<E, V> {
 	private Set<Vertex<V>> vertices;
 
 	private GraphImpl(Set<Edge<E, V>> edges, Set<Vertex<V>> vertices) {
+		if (edges == null || vertices == null || edges.contains(null) || vertices.contains(null)) {
+			throw new NullPointerException();
+		}
 		this.edges = edges;
 		this.vertices = vertices;
 	}
