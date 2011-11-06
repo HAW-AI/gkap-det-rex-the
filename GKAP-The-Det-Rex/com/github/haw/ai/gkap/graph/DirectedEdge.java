@@ -10,6 +10,10 @@ public class DirectedEdge<E, V> extends AbstractEdge<E, V> {
 	 * create a directed edge which goes from 'left' to 'right'
 	 */
 	public static <E, V> Edge<E, V> valueOf(Vertex<V> left, Vertex<V> right, E content) {
+        if (left == null || right == null || content == null) {
+            throw new NullPointerException();
+        }
+	    
 		return new DirectedEdge<E, V>(left, right, content);
 	}
 
@@ -18,9 +22,7 @@ public class DirectedEdge<E, V> extends AbstractEdge<E, V> {
 	}
 
 	public boolean isReachable(Vertex<V> from, Vertex<V> to) {
-		// compare identity because the graph may contain many structurally
-		// equal vertices
-		return from == left() && to == right();
+		return left().equals(from) && right().equals(to);
 	}
 	
 	@Override
