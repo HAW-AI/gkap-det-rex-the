@@ -30,5 +30,36 @@ public class UndirectedEdge<E, V> extends AbstractEdge<E, V> {
 	    return "[" + left().toString() + ", " + right().toString() + "]";
 	}
 
-	// inheritted hashCode() and equals()
+
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((content() == null) ? 0 : content().hashCode());
+        result = prime * result + ((vertices() == null) ? 0 : vertices().hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        AbstractEdge other = (AbstractEdge) obj;
+        if (content() == null) {
+            if (other.content() != null)
+                return false;
+        } else if (!content().equals(other.content()))
+            return false;
+        if (vertices() == null) {
+            if (other.vertices() != null)
+                return false;
+        } else if (!vertices().equals(other.vertices()))
+            return false;
+        return true;
+    }
 }
