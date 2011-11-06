@@ -16,6 +16,9 @@ abstract public class AbstractEdge<E,V> implements Edge<E,V>{
     private Vertex<V> right;
 
     protected AbstractEdge(Vertex<V> left, Vertex<V> right, E content) {
+        if (left == null || right == null || content == null) {
+            throw new NullPointerException();
+        }
         
         this.left    = left;
         this.right   = right;
