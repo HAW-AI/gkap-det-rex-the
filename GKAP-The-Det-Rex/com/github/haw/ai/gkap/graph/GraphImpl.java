@@ -3,6 +3,7 @@ package com.github.haw.ai.gkap.graph;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -87,65 +88,88 @@ public class GraphImpl<E, V> implements Graph<E, V> {
 	    if (vertices.size() == 0) {
 	        return "EmptyGraph";
 	    } else {
-	        return toString(vertices.iterator().next(), new HashSet<Vertex<V>>(), 0);
+            Set<Vertex<V>> visited = new HashSet<Vertex<V>>();
+            Set<Vertex<V>> unvisited = new HashSet<Vertex<V>>(vertices);
+            String s = "";
+            
+            // make multiple runs for graphs with unconnected components
+            while (!unvisited.isEmpty()) {
+    	        s += toString(unvisited.iterator().next(), visited, new HashSet<Edge<E,V>>(), 0);
+    	        unvisited.removeAll(visited);
+            }
+	        
+	        return s;
 	    }
 	}
 
-	public String toString(Vertex<V> root, Set<Vertex<V>> visited, int depth) {
+	public String toString(Vertex<V> root, Set<Vertex<V>> visited, Set<Edge<E, V>> visitedEdges, int depth) {
+	    // remember visited edges to not traverse one edge two times in an
+	    // undirected graph
+	    
 	    if (visited.contains(root)) {
 	        return "";
 	    }
 	    
 	    Set<Edge<E, V>> adjacent = adjacenceMap().get(root);
-	    Set<Vertex<V>> newVisited = new HashSet<Vertex<V>>(visited);
-	    newVisited.add(root);
+	    visited.add(root);
 	    String s = "";
 	    String indentation = "";
 	    
-	    for (int i = 0; i < depth; ++i) {
+	    for (int i = 0; i < depth*4; ++i) {
 	        indentation += " ";
 	    }
 	    
-	    for (Edge<E,V> edge : adjacent) {
-	        if (edge.vertices().size() == 1) {
-	            // loop
-	            s += indentation + root + "-" + edge + "\n";
-	        } else {
-	            s += indentation + root + "-" + edge + " " + toString(edge.otherVertex(root), newVisited, depth+1) + "\n";
-	        }
+	    if (adjacent.size() == 0) {
+	        // single vertex component
+	        s += indentation + root + "\n";
+	    } else {
+    	    for (Edge<E,V> edge : adjacent) {
+                if (visitedEdges.contains(edge)) continue;
+    	        visitedEdges.add(edge);
+    	        
+    	        if (edge.vertices().size() == 1) {
+    	            // loop
+    	            s += indentation + root + "-" + edge + "-" + root + "\n";
+    	        } else {
+    	            s += indentation + root + "-" + edge + "-" + edge.otherVertex(root) + "\n";
+    	            s += toString(edge.otherVertex(root), visited, visitedEdges, depth+1) + "\n";
+    	        }
+    	    }
 	    }
 	    
 	    return s;
 	}
 
+	/**
+	 * @return a Map with the vertices as its keys and the reachable neighbor
+	 *         vertices as its values (a subset of the actual adjacence set)
+	 */
 	public Map<Vertex<V>, Set<Edge<E, V>>> adjacenceMap() {
 	    // caching
-	    Map<Vertex<V>, Set<Edge<E, V>>> result = new HashMap<Vertex<V>, Set<Edge<E, V>>>();
+        
+        Map<Vertex<V>, Set<Edge<E, V>>> result = new HashMap<Vertex<V>, Set<Edge<E, V>>>();
+	    
+	    // init map
+	    for (Vertex<V> v : vertices) {
+	        result.put(v, new HashSet<Edge<E,V>>());
+	    }
+	    
 	    for (Edge<E, V> edge : edges) {
 	        Set<Vertex<V>> vertices = edge.vertices();
 	        if (vertices.size() == 1) {
 	            // loop
-	            checkAndSet(result, edge.left(), new HashSet<Edge<E,V>>());
 	            result.get(edge.left()).add(edge);
 	        } else {
 	            if (edge.isReachable(edge.left(), edge.right())) {
-	                checkAndSet(result, edge.left(), new HashSet<Edge<E,V>>());
 	                result.get(edge.left()).add(edge);
 	            }
 	            
 	            if (edge.isReachable(edge.right(), edge.left())) {
-	                checkAndSet(result, edge.right(), new HashSet<Edge<E,V>>());
 	                result.get(edge.right()).add(edge);
 	            }
 	        }
 	    }
 	    
 	    return result;
-	}
-	
-	private <K, Val> void checkAndSet(Map<K, Val> map, K key, Val defaultValue) {
-	    if (!map.containsKey(key)) {
-	        map.put(key, defaultValue);
-	    }
 	}
 }

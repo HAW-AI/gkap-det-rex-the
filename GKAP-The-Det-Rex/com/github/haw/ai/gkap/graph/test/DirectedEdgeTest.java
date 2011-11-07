@@ -72,7 +72,7 @@ public class DirectedEdgeTest {
         assertEquals(2, e3.vertices().size());
         assertEquals(2, e4.vertices().size());
         assertEquals(2, e5.vertices().size());
-        assertEquals(2, e6.vertices().size());
+        assertEquals(1, e6.vertices().size());
     }
 
     @Test

@@ -26,8 +26,19 @@ public interface Edge<E,V> {
      */
     public boolean isReachable(Vertex<V> from, Vertex<V> to);
     
+    /**
+     * @return the Vertex on the "left" side.
+     */
     public Vertex<V> left();
+
+    /**
+     * @return the Vertex on the "left" side.
+     */
     public Vertex<V> right();
     
+    /**
+     * @param v the Vertex on of the sides of the Edge
+     * @return the other Vertex that is connected with v via the Edge
+     */
     public Vertex<V> otherVertex(Vertex<V> v);
 }
