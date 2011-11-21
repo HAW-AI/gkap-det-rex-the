@@ -16,8 +16,8 @@ public class DijkstraAlgorithm<E,V> {
 		this.graph = graph;
 	}
 
-	public DijkstraAlgorithm<E,V> valueOf(Graph<E,V> graph) {
-		return new DijkstraAlgorithm<E,V>(graph);
+	public static DijkstraAlgorithm valueOf(Graph graph) {
+		return new DijkstraAlgorithm(graph);
 	}
 	
 	public void runAlgorithm(Vertex<V> start, Vertex<V> finish) {
@@ -28,7 +28,7 @@ public class DijkstraAlgorithm<E,V> {
 		 * Edge contents must be numbers
 		 */
 		for (Edge<E, V> edge : graph.edges()) {
-			if (!(edge.content() instanceof Integer) || !(edge.content() instanceof Double)) {
+			if (!(edge.content() instanceof Integer || edge.content() instanceof Double)) {
 				throw new IllegalArgumentException("All of your Edge contents have to be Numbers because they are the weight used to calculate the shortest path.");
 			}
 		}
@@ -67,6 +67,10 @@ public class DijkstraAlgorithm<E,V> {
 				}
 			}
 		}		
+	}
+	
+	public String toString() {
+		return distances.toString();
 	}
 	
 	private Vertex<V> getUnvisitedVertexWithLowestDistance() {
@@ -117,10 +121,10 @@ public class DijkstraAlgorithm<E,V> {
 			if (edge.isDirected()) {
 				updatedEdges.add(edge);
 			} else {
-				Graphs.directedEdge(edge.left(), edge.right(), edge.content());
-				Graphs.directedEdge(edge.right(), edge.left(), edge.content());
+				updatedEdges.add(Graphs.directedEdge(edge.left(), edge.right(), edge.content()));
+				updatedEdges.add(Graphs.directedEdge(edge.right(), edge.left(), edge.content()));
 			}
 		}
-		graph = GraphImpl.valueOf(updatedEdges, graph.vertices());
+		graph = Graphs.graph(updatedEdges, graph.vertices());
 	}
 }
