@@ -35,7 +35,7 @@ public class Matrix implements Cloneable {
 		if (x < 0 || x > this.getWidth() || y < 0 || y > this.getHeight()) {
 			throw new ArrayIndexOutOfBoundsException();
 		}		
-		this.values[x*y] = value;
+		this.values[x + (y*getWidth())] = value;
 	}
 	
 	public String toString() {
