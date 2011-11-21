@@ -1,7 +1,10 @@
 package com.github.haw.ai.gkap.graph;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -9,8 +12,10 @@ public class DijkstraAlgorithm<E,V> {
 
 	private Graph<E,V> graph;
 	private Map<Vertex<V>, Double> distances;
-	private Map<Vertex<V>,Vertex<V>> predecessor;
+	private Map<Vertex<V>,Vertex<V>> predecessors;
 	private Map<Vertex<V>, Boolean> ok;
+	private Vertex<V> start;
+	private Vertex<V> finish;
 	
 	private DijkstraAlgorithm(Graph<E,V> graph) {
 		this.graph = graph;
@@ -24,6 +29,9 @@ public class DijkstraAlgorithm<E,V> {
 		if (start == null || finish == null || !graph.vertices().contains(start) || !graph.vertices().contains(finish)) {
 			throw new IllegalArgumentException("Something went wrong with your start nodes.");
 		}
+		this.start = start;
+		this.finish = finish;
+
 		/*
 		 * Edge contents must be numbers
 		 */
@@ -49,7 +57,7 @@ public class DijkstraAlgorithm<E,V> {
 			 * Get the unvisited Vertex with the lowest distance..
 			 */
 			currentVertex = getUnvisitedVertexWithLowestDistance();
-			
+
 			/*
 			 * ..and set this Vertex as Visited.
 			 */
@@ -63,14 +71,29 @@ public class DijkstraAlgorithm<E,V> {
 					// set the new, shorter distance
 					distances.put(e.otherVertex(currentVertex), ((Double) e.content() + distances.get(currentVertex)));
 					// and set yourself as the predecessor
-					predecessor.put(e.otherVertex(currentVertex), currentVertex);
+					predecessors.put(e.otherVertex(currentVertex), currentVertex);
 				}
 			}
 		}		
 	}
 	
+	public List<Vertex<V>> shortestPath() {
+		List<Vertex<V>> result = new ArrayList<Vertex<V>>();
+		
+		Vertex<V> currentVertex = finish;
+		Vertex<V> predecessor = predecessors.get(currentVertex);
+		
+		while (!currentVertex.equals(predecessor)) {
+			result.add(currentVertex);
+			currentVertex = predecessor;
+			predecessor = predecessors.get(currentVertex); //fail
+		}
+		Collections.reverse(result);
+		return result;
+	}
+	
 	public String toString() {
-		return distances.toString();
+		return "Distances: " + distances.toString() + "\nPredecessors: " + predecessors.toString() + "\nOk: " + ok.toString();
 	}
 	
 	private Vertex<V> getUnvisitedVertexWithLowestDistance() {
@@ -91,7 +114,7 @@ public class DijkstraAlgorithm<E,V> {
 				result = vert;
 			}
 		}
-		
+
 		return result;
 	}
 
@@ -102,7 +125,7 @@ public class DijkstraAlgorithm<E,V> {
 	 */
 	private void setup(Vertex<V> startVertex) {
 		distances = new HashMap<Vertex<V>, Double>();
-		predecessor = new HashMap<Vertex<V>, Vertex<V>>();
+		predecessors = new HashMap<Vertex<V>, Vertex<V>>();
 		ok = new HashMap<Vertex<V>, Boolean>();
 		
 		for (Vertex<V> vertex : graph.vertices()) {
@@ -110,7 +133,8 @@ public class DijkstraAlgorithm<E,V> {
 			ok.put(vertex, false);
 		}
 		distances.put(startVertex, 0.0);
-		predecessor.put(startVertex, startVertex);
+		predecessors.put(startVertex, startVertex);
+
 		
 		/*
 		 * All the undirected Edges have to be replaced with two directed
