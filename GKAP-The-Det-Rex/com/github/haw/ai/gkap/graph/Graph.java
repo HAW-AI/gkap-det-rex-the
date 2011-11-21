@@ -48,4 +48,9 @@ public interface Graph<E,V> {
    * @return the Set of Vertices of this Graph
    */
   public Set<Vertex<V>> vertices();
+  
+  
+  // stats ...
+  public Set<Vertex<V>> adjacent(Vertex<V> vertex, AccessStats<E, V> stats);
+  public Set<Edge<E,V>> incident(Vertex<V> vertex, AccessStats<E, V> stats);
 }

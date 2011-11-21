@@ -85,6 +85,7 @@ public class DijkstraAlgorithmTest<E, V> {
 		
 		List expectedFalseResult = Arrays.asList(a,c,e);
 		assertNotSame(expectedFalseResult, result.shortestPath());
+
 	}
 
 }
