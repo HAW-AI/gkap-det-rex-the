@@ -55,8 +55,8 @@ public class Matrix implements Cloneable {
 	}
 
 	public void clear() {
-		for (Double d : this.values) {
-			d = 0.0;
+		for (int i = 0; i < values.length; i++) {
+			values[i] = 0.0;
 		}
 	}
 }
