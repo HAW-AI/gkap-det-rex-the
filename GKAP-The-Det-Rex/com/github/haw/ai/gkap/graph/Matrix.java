@@ -43,6 +43,7 @@ public class Matrix implements Cloneable {
 		for (int y = 0; y < getHeight(); y++) {
 			for (int x = 0; x < getWidth(); x++) {
 				result.append(get(x,y));
+				result.append(" ");
 			}
 			result.append("\n");
 		}
