@@ -17,6 +17,9 @@ public class DijkstraAlgorithm<E,V> {
 	private Vertex<V> start;
 	private Vertex<V> finish;
 	
+	private AccessStats<E, V> accessStats;
+	private Stats<E, V> stats;
+	
 	private DijkstraAlgorithm(Graph<E,V> graph) {
 		this.graph = graph;
 		this.distances = new HashMap<Vertex<V>, Double>();
@@ -42,6 +45,10 @@ public class DijkstraAlgorithm<E,V> {
 				throw new IllegalArgumentException("All of your Edge contents have to be Numbers because they are the weight used to calculate the shortest path.");
 			}
 		}
+		
+		this.accessStats = new AccessStats<E, V>();
+		
+		Long startTime = System.currentTimeMillis();
 
 		/*
 		 * The setup stage
@@ -65,17 +72,24 @@ public class DijkstraAlgorithm<E,V> {
 			ok.put(currentVertex, true);
 			
 			// get the possible Edges we could possibly walk along from the current Vertex
-			incidentEdges = graph.incident(currentVertex);
+			incidentEdges = graph.incident(currentVertex, accessStats);
 			for (Edge<E, V> e : incidentEdges) {
+			    accessStats.increment(e);
+			    
+			    accessStats.increment(e, 2);
 				// if the Distance is lower than the currently know distance:
 				if ((Double) e.content() + distances.get(currentVertex) < distances.get(e.otherVertex(currentVertex))) {
+				    accessStats.increment(e, 3);
 					// set the new, shorter distance
 					distances.put(e.otherVertex(currentVertex), ((Double) e.content() + distances.get(currentVertex)));
 					// and set yourself as the predecessor
 					predecessors.put(e.otherVertex(currentVertex), currentVertex);
 				}
 			}
-		}		
+		}
+		
+		Long endTime = System.currentTimeMillis();
+		this.stats = new Stats<E, V>(this.accessStats, endTime-startTime);
 	}
 	
 	public List<Vertex<V>> shortestPath() {
@@ -103,12 +117,15 @@ public class DijkstraAlgorithm<E,V> {
 		
 		Set<Vertex<V>> unvisited = new HashSet<Vertex<V>>();
 		for (Vertex<V> vert : ok.keySet()) {
+		    accessStats.increment(vert);
+		    
 			if (!ok.get(vert)) {
 				unvisited.add(vert);
 			}
 		}
 		
 		for (Vertex<V> vert : unvisited) {
+		    accessStats.increment(vert);
 			if (result == null) {
 				result = vert;
 			}
@@ -132,6 +149,7 @@ public class DijkstraAlgorithm<E,V> {
 		ok = new HashMap<Vertex<V>, Boolean>();
 		
 		for (Vertex<V> vertex : graph.vertices()) {
+		    accessStats.increment(vertex);
 			distances.put(vertex, Double.POSITIVE_INFINITY);
 			ok.put(vertex, false);
 		}
@@ -145,13 +163,21 @@ public class DijkstraAlgorithm<E,V> {
 		 */
 		Set<Edge<E, V>> updatedEdges = new HashSet<Edge<E, V>>();
 		for (Edge<E,V> edge : graph.edges()) {
+		    accessStats.increment(edge);
 			if (edge.isDirected()) {
 				updatedEdges.add(edge);
 			} else {
+			    accessStats.increment(edge, 6);
 				updatedEdges.add(Graphs.directedEdge(edge.left(), edge.right(), edge.content()));
 				updatedEdges.add(Graphs.directedEdge(edge.right(), edge.left(), edge.content()));
 			}
 		}
+		
+		for (Vertex<V> v : graph.vertices()) accessStats.increment(v);
 		graph = Graphs.graph(updatedEdges, graph.vertices());
+	}
+	
+	public Stats<E, V> stats() {
+	    return new Stats<E, V>(stats);
 	}
 }

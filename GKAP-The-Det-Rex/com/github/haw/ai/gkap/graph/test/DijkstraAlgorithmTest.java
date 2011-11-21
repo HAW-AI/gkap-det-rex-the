@@ -74,6 +74,8 @@ public class DijkstraAlgorithmTest<E, V> {
 		expectedResult.add(v4);
 		
 		assertEquals(expectedResult,result.shortestPath());
+		
+		System.out.println(result.stats());
 	}
 
 }

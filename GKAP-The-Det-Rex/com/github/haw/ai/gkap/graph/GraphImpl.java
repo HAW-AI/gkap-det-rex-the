@@ -182,4 +182,34 @@ public class GraphImpl<E, V> implements Graph<E, V> {
 	public Set<Vertex<V>> vertices() {
 		return new HashSet<Vertex<V>>(vertices);
 	}
+	
+	
+	
+	// stats ...
+
+
+    @Override
+    public Set<Vertex<V>> adjacent(Vertex<V> vertex, AccessStats<E, V> stats) {
+        Set<Vertex<V>> result = new HashSet<Vertex<V>>();
+        for (Vertex<V> v : vertices) {
+            stats.increment(v);
+            if (isAdjacent(v, vertex)) {
+                result.add(v);
+            }
+        }
+
+        return result;
+    }
+
+    @Override
+    public Set<Edge<E, V>> incident(Vertex<V> vertex, AccessStats<E, V> stats) {
+        Set<Edge<E, V>> result = new HashSet<Edge<E, V>>();
+        for (Edge<E, V> edge : edges) {
+            stats.increment(edge);
+            if (isIncident(vertex, edge)) {
+                result.add(edge);
+            }
+        }
+        return result;
+    }
 }
