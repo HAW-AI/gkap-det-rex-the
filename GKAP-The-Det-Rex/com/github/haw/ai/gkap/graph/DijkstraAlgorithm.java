@@ -19,6 +19,8 @@ public class DijkstraAlgorithm<E,V> {
 	
 	private DijkstraAlgorithm(Graph<E,V> graph) {
 		this.graph = graph;
+		this.distances = new HashMap<Vertex<V>, Double>();
+		this.predecessors = new HashMap<Vertex<V>,Vertex<V>>();
 	}
 
 	public static DijkstraAlgorithm valueOf(Graph graph) {
@@ -51,13 +53,12 @@ public class DijkstraAlgorithm<E,V> {
 		 */
 		Vertex<V> currentVertex = null;
 		Set<Edge<E, V>> incidentEdges = null;
-		while (ok.entrySet().contains(false)) {
+		while (ok.values().contains(false)) {
 			
 			/*
 			 * Get the unvisited Vertex with the lowest distance..
 			 */
 			currentVertex = getUnvisitedVertexWithLowestDistance();
-
 			/*
 			 * ..and set this Vertex as Visited.
 			 */
@@ -88,6 +89,7 @@ public class DijkstraAlgorithm<E,V> {
 			currentVertex = predecessor;
 			predecessor = predecessors.get(currentVertex); //fail
 		}
+		result.add(currentVertex);
 		Collections.reverse(result);
 		return result;
 	}
@@ -101,7 +103,7 @@ public class DijkstraAlgorithm<E,V> {
 		
 		Set<Vertex<V>> unvisited = new HashSet<Vertex<V>>();
 		for (Vertex<V> vert : ok.keySet()) {
-			if (ok.get(vert)) {
+			if (!ok.get(vert)) {
 				unvisited.add(vert);
 			}
 		}
@@ -110,6 +112,7 @@ public class DijkstraAlgorithm<E,V> {
 			if (result == null) {
 				result = vert;
 			}
+			
 			if (distances.get(vert) < distances.get(result)) {
 				result = vert;
 			}
