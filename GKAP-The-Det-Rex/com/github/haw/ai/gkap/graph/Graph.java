@@ -38,4 +38,14 @@ public interface Graph<E,V> {
    * @return the Set of Edges that are incident with the given Vertex
    */
   public Set<Edge<E,V>> incident(Vertex<V> vertex);
+  
+  /**
+   * @return the Set of edges of this Graph
+   */
+  public Set<Edge<E, V>> edges();
+  
+  /**
+   * @return the Set of Vertices of this Graph
+   */
+  public Set<Vertex<V>> vertices();
 }

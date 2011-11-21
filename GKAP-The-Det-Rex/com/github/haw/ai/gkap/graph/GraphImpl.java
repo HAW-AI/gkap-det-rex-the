@@ -172,4 +172,14 @@ public class GraphImpl<E, V> implements Graph<E, V> {
 	    
 	    return result;
 	}
+
+	@Override
+	public Set<Edge<E, V>> edges() {
+		return new HashSet<Edge<E, V>>(edges);
+	}
+
+	@Override
+	public Set<Vertex<V>> vertices() {
+		return new HashSet<Vertex<V>>(vertices);
+	}
 }

@@ -53,4 +53,8 @@ abstract public class AbstractEdge<E,V> implements Edge<E,V>{
             return this.left();
         }
     }
+    
+    public boolean isDirected() {
+    	return false;
+    }
 }

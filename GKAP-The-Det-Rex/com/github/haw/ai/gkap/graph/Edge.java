@@ -41,4 +41,9 @@ public interface Edge<E,V> {
      * @return the other Vertex that is connected with v via the Edge
      */
     public Vertex<V> otherVertex(Vertex<V> v);
+    
+    /**
+     * @return true if the Edge is directed, otherwise false
+     */
+    public boolean isDirected();
 }

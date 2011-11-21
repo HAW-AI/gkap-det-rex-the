@@ -68,4 +68,8 @@ public class DirectedEdge<E, V> extends AbstractEdge<E, V> {
             return false;
         return true;
     }
+    
+    public boolean isDirected() {
+    	return true;
+    }
 }
