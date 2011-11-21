@@ -51,7 +51,7 @@ public class Matrix implements Cloneable {
 	}
 	
 	public Matrix clone() {
-		return new Matrix(this.getWidth(), this.getHeight(), this.values);
+		return new Matrix(this.getWidth(), this.getHeight(), this.values.clone());
 	}
 
 	public void clear() {
