@@ -73,7 +73,7 @@ public class FloydWarshallAlgorithm<E,V> {
 		}
 	}
 
-	public List<Vertex<V>> getPath(Vertex<V> start, Vertex<V> finish) {
+	public List<Vertex<V>> shortestPath(Vertex<V> start, Vertex<V> finish) {
 		if (start == null || finish == null || !graph.vertices().contains(start) || !graph.vertices().contains(finish)) {
 			throw new IllegalArgumentException("Something went wrong with your start nodes.");
 		}
