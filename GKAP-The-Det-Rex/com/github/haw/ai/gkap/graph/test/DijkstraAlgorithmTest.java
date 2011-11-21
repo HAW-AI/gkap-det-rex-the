@@ -2,10 +2,14 @@ package com.github.haw.ai.gkap.graph.test;
 
 import static org.junit.Assert.*;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+
+import junit.framework.Assert;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -39,41 +43,48 @@ public class DijkstraAlgorithmTest<E, V> {
 	Set<Edge<E, V>> edges = new HashSet<Edge<E, V>>();
 	Set<Vertex<V>> vertices = new HashSet<Vertex<V>>();
 	Graph graph = null;
-
-	@Before
-	public void setUp() throws Exception {
-		edges = new HashSet<Edge<E, V>>();
-		edges.add((Edge<E, V>) e1);
-		edges.add((Edge<E, V>) e2);
-		edges.add((Edge<E, V>) e3);
-		edges.add((Edge<E, V>) e4);
-		edges.add((Edge<E, V>) e5);
-		edges.add((Edge<E, V>) e6);
-		edges.add((Edge<E, V>) e7);
-		edges.add((Edge<E, V>) e8);
-		edges.add((Edge<E, V>) e9);
-		edges.add((Edge<E, V>) e10);
-		vertices = new HashSet<Vertex<V>>();
-		vertices.add((Vertex<V>) v1);
-		vertices.add((Vertex<V>) v2);
-		vertices.add((Vertex<V>) v3);
-		vertices.add((Vertex<V>) v4);
-		vertices.add((Vertex<V>) v5);
-		vertices.add((Vertex<V>) v6);
-		graph = GraphImpl.valueOf(edges, vertices);
-	}
+	
+	Vertex<String> a = Graphs.vertex("a");
+	Vertex<String> b = Graphs.vertex("b");
+	Vertex<String> c = Graphs.vertex("c");
+	Vertex<String> d = Graphs.vertex("d");
+	Vertex<String> e = Graphs.vertex("e");
+	Vertex<String> f = Graphs.vertex("f");
+	
+	Edge<Double, String> ab = Graphs.undirectedEdge(a,b,4.0);
+	Edge<Double, String> ae = Graphs.undirectedEdge(a,e,4.0);
+	Edge<Double, String> ac = Graphs.undirectedEdge(a,c,2.0);
+	Edge<Double, String> bc = Graphs.undirectedEdge(b,c,1.0);
+	Edge<Double, String> ce = Graphs.undirectedEdge(c,e,5.0);
+	Edge<Double, String> cd = Graphs.undirectedEdge(c,d,3.0);
+	Edge<Double, String> ef = Graphs.undirectedEdge(e,f,1.0);
+	Edge<Double, String> df = Graphs.undirectedEdge(d,f,2.0);
 
 	@Test
-	public void runAlgorithm() {
+	public void testRunAlgorithm() {
+		edges = new HashSet<Edge<E, V>>((Collection<? extends Edge<E, V>>) Arrays.asList(e1,e2,e3,e4,e5,e6,e7,e8,e9,e10));
+		vertices = new HashSet<Vertex<V>>((Collection<? extends Vertex<V>>) Arrays.asList(v1,v2,v3,v4,v5,v6));
+		graph = GraphImpl.valueOf(edges, vertices);
 		DijkstraAlgorithm result = DijkstraAlgorithm.valueOf(graph);
 		result.runAlgorithm(v1, v4);
-		List expectedResult = new LinkedList();
-		expectedResult.add(v1);
-		expectedResult.add(v6);
-		expectedResult.add(v3);
-		expectedResult.add(v4);
+		List expectedResult = Arrays.asList(v1,v6,v3,v4);
 		
 		assertEquals(expectedResult,result.shortestPath());
+	}
+	
+	@Test
+	public void testRunAlgorithmSecondGraph() {
+		edges = new HashSet<Edge<E, V>>((Collection<? extends Edge<E, V>>) Arrays.asList(ab,ae,ac,bc,ce,cd,ef,df));
+		vertices = new HashSet<Vertex<V>>((Collection<? extends Vertex<V>>) Arrays.asList(a,b,c,d,e,f));
+		graph = GraphImpl.valueOf(edges, vertices);
+		DijkstraAlgorithm result = DijkstraAlgorithm.valueOf(graph);
+		result.runAlgorithm(a, d);
+		List expectedResult = Arrays.asList(a,c,d);
+		
+		assertEquals(expectedResult,result.shortestPath());
+		
+		List expectedFalseResult = Arrays.asList(a,c,e);
+		assertNotSame(expectedFalseResult, result.shortestPath());
 	}
 
 }
