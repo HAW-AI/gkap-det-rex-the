@@ -45,9 +45,8 @@ public class FloydWarshallAlgorithm<E,V> {
 				for (int j = 0; j < floyd.getWidth(); j++) {
 					if (floyd.get(i, k)+floyd.get(k, j) < floyd.get(i, j)) {
 						floyd.set(i, j, floyd.get(i, k)+floyd.get(k, j));
-						
+						next.set(i, j, (double) k);
 					}
-					
 				}
 			}
 		}
@@ -97,8 +96,7 @@ public class FloydWarshallAlgorithm<E,V> {
 	}
 	
 	private List<Integer> path(int s, int e) {
-		List<Integer> result = new ArrayList<Integer>();
-		Double cur;
+		List<Integer> result = new ArrayList<Integer>(); 
 //		Weg rekonstuieren
 //		 10    if path[i][j] equals infinity then
 //		 11      return "no path";
@@ -107,9 +105,9 @@ public class FloydWarshallAlgorithm<E,V> {
 //		 14      return " ";   /* there is an edge from i to j, with no vertices between */
 //		 15    else
 //		 16      return GetPath(i,intermediate) + intermediate + GetPath(intermediate,j);
-		if (!warshall.get(s, e).equals(Double.POSITIVE_INFINITY)) {
-			cur = next.get(s, e);
-			if (cur != null) {
+		if (!Double.isInfinite(warshall.get(s, e))) {
+			Double cur = next.get(s, e);
+			if (cur != 0) {
 				result.addAll(path(s,cur.intValue()));
 				result.add(cur.intValue());
 				result.addAll(path(cur.intValue(),e));
@@ -124,9 +122,8 @@ public class FloydWarshallAlgorithm<E,V> {
 		Matrix result = new Matrix(n,n);
 		Set<Edge<E,V>> edges;
 		for (Vertex<V> v : graph.vertices()) {
-			i++;
 			for (Vertex<V> t : graph.vertices()) {
-				j++;
+
 				if (graph.isAdjacent(v, t)) {
 					edges = (Set)((HashSet)graph.incident(v)).clone();
 					edges.retainAll(graph.incident(t));
@@ -141,9 +138,11 @@ public class FloydWarshallAlgorithm<E,V> {
 				else {
 					result.set(i, j, Double.POSITIVE_INFINITY);
 				}
+				j++;
 			}
 			low = Double.POSITIVE_INFINITY;
 			j = 0;
+			i++;
 		}
 		return result;
 	}
