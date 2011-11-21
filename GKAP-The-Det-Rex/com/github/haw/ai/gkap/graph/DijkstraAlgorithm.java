@@ -83,7 +83,7 @@ public class DijkstraAlgorithm<E,V> {
 		Vertex<V> currentVertex = finish;
 		Vertex<V> predecessor = predecessors.get(currentVertex);
 		
-		while (!currentVertex.equals(predecessor)) {
+		while (!(currentVertex == predecessor)) {
 			result.add(currentVertex);
 			currentVertex = predecessor;
 			predecessor = predecessors.get(currentVertex); //fail
