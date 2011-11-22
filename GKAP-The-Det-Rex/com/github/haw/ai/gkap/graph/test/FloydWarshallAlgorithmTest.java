@@ -74,7 +74,7 @@ public class FloydWarshallAlgorithmTest<E, V> {
 		expectedResult.add(v3);
 		expectedResult.add(v4);
 		
-		assertEquals(expectedResult,result.shortestPath(v1,v2));
+		assertEquals(expectedResult,result.shortestPath(v1,v4));
 	}
 
 }
