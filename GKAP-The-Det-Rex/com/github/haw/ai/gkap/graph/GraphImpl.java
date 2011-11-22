@@ -212,4 +212,27 @@ public class GraphImpl<E, V> implements Graph<E, V> {
         }
         return result;
     }
+
+    @Override
+    public boolean isAdjacent(Vertex<V> vertex, Vertex<V> otherVertex, AccessStats<E, V> stats) {
+        for (Edge<E, V> e : edges) {
+            stats.increment(e);
+            
+            for (Vertex<V> v : e.vertices()) stats.increment(v,2);
+            if (e.vertices().contains(vertex)
+                    && e.vertices().contains(otherVertex)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean isIncident(Vertex<V> vertex, Edge<E, V> edge, AccessStats<E, V> stats) {
+        for (Vertex<V> v : edge.vertices()) stats.increment(v);
+        if (edge.vertices().contains(vertex)) {
+            return true;
+        }
+        return false;
+    }
 }

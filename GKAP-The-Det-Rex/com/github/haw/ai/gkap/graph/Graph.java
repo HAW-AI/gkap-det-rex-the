@@ -53,4 +53,6 @@ public interface Graph<E,V> {
   // stats ...
   public Set<Vertex<V>> adjacent(Vertex<V> vertex, AccessStats<E, V> stats);
   public Set<Edge<E,V>> incident(Vertex<V> vertex, AccessStats<E, V> stats);
+  public boolean isAdjacent(Vertex<V> vertex, Vertex<V> otherVertex, AccessStats<E, V> stats);
+  public boolean isIncident(Vertex<V> vertex, Edge<E,V> edge, AccessStats<E, V> stats);
 }

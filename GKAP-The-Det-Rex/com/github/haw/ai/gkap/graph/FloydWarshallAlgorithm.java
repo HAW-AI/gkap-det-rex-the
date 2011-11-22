@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static com.github.haw.ai.gkap.graph.Graphs.*;
+
 public class FloydWarshallAlgorithm<E,V> {
 	private final Graph<E,V> graph;
 	private Map<Integer, Vertex<V>> map;
@@ -14,6 +16,9 @@ public class FloydWarshallAlgorithm<E,V> {
 	private Matrix next;
 	private Matrix floyd;
 	private Matrix warshall;
+	
+	private AccessStats<E, V> accessStats;
+	private Stats<E, V> stats;
 	
 	private FloydWarshallAlgorithm(Graph<E, V> graph) {
 		super();
@@ -26,9 +31,13 @@ public class FloydWarshallAlgorithm<E,V> {
 	public void runAlgorithm() {
 		int c = 0;
 		for (Vertex<V> v : graph.vertices()) {
+		    // ignore access because it's not relevant to the algo
 			this.map.put(c, v);
 			c++;
 		}
+
+        this.accessStats = new AccessStats<E, V>();
+        Long startTime = System.currentTimeMillis();
 		
 //		Algorithmus von Floyd
 //
@@ -41,9 +50,17 @@ public class FloydWarshallAlgorithm<E,V> {
 		next.clear();
 		floyd = edgeCost.clone();
 		for (int k = 1; k < floyd.getHeight(); k++) {
+		    accessStats.increment(this.map.get(k));
 			for (int i = 0; i < floyd.getHeight(); i++) {
+	            accessStats.increment(this.map.get(i));
 				for (int j = 0; j < floyd.getWidth(); j++) {
+		            accessStats.increment(this.map.get(j));
+                    accessStats.increment(directedEdge(this.map.get(i), this.map.get(k), (E)edgeCost.get(i, k)));
+                    accessStats.increment(directedEdge(this.map.get(k), this.map.get(j), (E)edgeCost.get(k, j)));
+                    accessStats.increment(directedEdge(this.map.get(i), this.map.get(j), (E)edgeCost.get(i, j)));
 					if (floyd.get(i, k)+floyd.get(k, j) < floyd.get(i, j)) {
+	                    accessStats.increment(directedEdge(this.map.get(i), this.map.get(k), (E)edgeCost.get(i, k)));
+	                    accessStats.increment(directedEdge(this.map.get(k), this.map.get(j), (E)edgeCost.get(k, j)));
 						floyd.set(i, j, floyd.get(i, k)+floyd.get(k, j));
 						next.set(i, j, (double) k);
 					}
@@ -60,9 +77,14 @@ public class FloydWarshallAlgorithm<E,V> {
 //		(5)         Falls d[k,j] = 1 : d[i,j] = 1
 		warshall = floyd.clone();
 		for (int k = 1; k < warshall.getHeight(); k++) {
+            accessStats.increment(this.map.get(k));
 			for (int i = 1; i < warshall.getHeight(); i++) {
+	            accessStats.increment(this.map.get(i));
+                accessStats.increment(directedEdge(this.map.get(i), this.map.get(k), (E)edgeCost.get(i, k)));
 				if (warshall.get(i, k) == 1) {
 					for (int j = 1; j < warshall.getWidth(); j++) {
+		                accessStats.increment(this.map.get(j));
+	                    accessStats.increment(directedEdge(this.map.get(k), this.map.get(j), (E)edgeCost.get(k, j)));
 						if (warshall.get(k, j) == 1) {
 							warshall.set(i, j, 1.0);
 						}
@@ -70,6 +92,9 @@ public class FloydWarshallAlgorithm<E,V> {
 				}
 			}
 		}
+        
+        Long endTime = System.currentTimeMillis();
+        this.stats = new Stats<E, V>(this.accessStats, endTime-startTime);
 	}
 
 	public List<Vertex<V>> shortestPath(Vertex<V> start, Vertex<V> finish) {
@@ -124,12 +149,15 @@ public class FloydWarshallAlgorithm<E,V> {
 		Matrix result = new Matrix(n,n);
 		Set<Edge<E,V>> edges;
 		for (Vertex<V> v : graph.vertices()) {
+            accessStats.increment(v);
 			for (Vertex<V> t : graph.vertices()) {
+	            accessStats.increment(t);
 
-				if (graph.isAdjacent(v, t)) {
-					edges = (Set)((HashSet)graph.incident(v)).clone();
-					edges.retainAll(graph.incident(t));
+				if (graph.isAdjacent(v, t, accessStats)) {
+					edges = (Set)((HashSet)graph.incident(v, accessStats)).clone();
+					edges.retainAll(graph.incident(t, accessStats));
 					for (Edge<E, V> e : edges) {
+					    accessStats.increment(e, 2);
 						content = (Double) e.content();
 						if (content < low) {
 							low = content;
@@ -148,4 +176,8 @@ public class FloydWarshallAlgorithm<E,V> {
 		}
 		return result;
 	}
+    
+    public Stats<E, V> stats() {
+        return new Stats<E, V>(stats);
+    }
 }
