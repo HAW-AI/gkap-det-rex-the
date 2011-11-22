@@ -118,6 +118,9 @@ public class FloydWarshallAlgorithm<E,V> {
 			result.add(map.get(i));
 		}
 		result.add(finish);
+		
+		System.out.println(floyd);
+		System.out.println(warshall);
 		return result;
 	}
 	
@@ -154,7 +157,7 @@ public class FloydWarshallAlgorithm<E,V> {
 	            accessStats.increment(t);
 
 				if (graph.isAdjacent(v, t, accessStats)) {
-					edges = (Set)((HashSet)graph.incident(v, accessStats)).clone();
+					edges = graph.incident(v);
 					edges.retainAll(graph.incident(t, accessStats));
 					for (Edge<E, V> e : edges) {
 					    accessStats.increment(e, 2);
