@@ -87,11 +87,12 @@ public class FloydWarshallAlgorithm<E,V> {
 				t = e.getKey();
 			}
 		}
-		
 		List<Integer> steps = path(v, t);
+		result.add(map.get(start));
 		for (Integer i : steps) { 
 			result.add(map.get(i));
 		}
+		result.add(map.get(finish));
 		return result;
 	}
 	
@@ -105,8 +106,9 @@ public class FloydWarshallAlgorithm<E,V> {
 //		 14      return " ";   /* there is an edge from i to j, with no vertices between */
 //		 15    else
 //		 16      return GetPath(i,intermediate) + intermediate + GetPath(intermediate,j);
-		if (!Double.isInfinite(warshall.get(s, e))) {
+		if (!Double.isInfinite(floyd.get(s, e))) {
 			Double cur = next.get(s, e);
+//			System.out.println(String.format("%d -> %d = %f (%s -> %s)", s, e, cur, map.get(s), map.get(e)));
 			if (cur != 0) {
 				result.addAll(path(s,cur.intValue()));
 				result.add(cur.intValue());
@@ -134,13 +136,13 @@ public class FloydWarshallAlgorithm<E,V> {
 						}
 					}
 					result.set(i, j, low);
+					low = Double.POSITIVE_INFINITY;
 				}
 				else {
 					result.set(i, j, Double.POSITIVE_INFINITY);
 				}
 				j++;
 			}
-			low = Double.POSITIVE_INFINITY;
 			j = 0;
 			i++;
 		}
