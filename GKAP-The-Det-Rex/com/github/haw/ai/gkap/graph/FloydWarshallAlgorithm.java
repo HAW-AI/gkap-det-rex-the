@@ -88,11 +88,11 @@ public class FloydWarshallAlgorithm<E,V> {
 			}
 		}
 		List<Integer> steps = path(v, t);
-		result.add(map.get(start));
+		result.add(start);
 		for (Integer i : steps) { 
 			result.add(map.get(i));
 		}
-		result.add(map.get(finish));
+		result.add(finish);
 		return result;
 	}
 	
