@@ -1,4 +1,4 @@
-package com.github.haw.ai.gkap.graph;
+package com.github.haw.ai.gkap.algorithms;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -7,6 +7,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import com.github.haw.ai.gkap.graph.AccessStats;
+import com.github.haw.ai.gkap.graph.Edge;
+import com.github.haw.ai.gkap.graph.Graph;
+import com.github.haw.ai.gkap.graph.Graphs;
+import com.github.haw.ai.gkap.graph.Stats;
+import com.github.haw.ai.gkap.graph.Vertex;
 
 public class DijkstraAlgorithm<E,V> {
 
