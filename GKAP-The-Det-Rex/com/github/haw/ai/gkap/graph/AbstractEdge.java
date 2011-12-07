@@ -14,8 +14,10 @@ abstract public class AbstractEdge<E,V> implements Edge<E,V>{
     private E content;
     private Vertex<V> left;
     private Vertex<V> right;
+    private int capacity;
+    private int flow;
 
-    protected AbstractEdge(Vertex<V> left, Vertex<V> right, E content) {
+    protected AbstractEdge(Vertex<V> left, Vertex<V> right, E content, int capacity, int flow) {
         if (left == null || right == null || content == null) {
             throw new NullPointerException();
         }
@@ -23,6 +25,8 @@ abstract public class AbstractEdge<E,V> implements Edge<E,V>{
         this.left    = left;
         this.right   = right;
         this.content = content;
+        this.capacity = capacity;
+        this.flow = flow;
     }
 
     @Override
@@ -56,5 +60,13 @@ abstract public class AbstractEdge<E,V> implements Edge<E,V>{
     
     public boolean isDirected() {
     	return false;
+    }
+    
+    public int capacity() {
+    	return capacity;
+    }
+    
+    public int flow() {
+    	return flow;
     }
 }

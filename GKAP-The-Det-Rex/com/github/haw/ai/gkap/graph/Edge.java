@@ -46,4 +46,14 @@ public interface Edge<E,V> {
      * @return true if the Edge is directed, otherwise false
      */
     public boolean isDirected();
+
+    /**
+     * @return the capacity of this edge
+     */
+    public int capacity();
+
+    /**
+     * @return the flow of this Edge
+     */
+    public int flow();
 }

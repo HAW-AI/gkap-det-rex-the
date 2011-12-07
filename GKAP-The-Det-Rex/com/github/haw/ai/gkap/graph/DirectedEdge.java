@@ -18,7 +18,19 @@ public class DirectedEdge<E, V> extends AbstractEdge<E, V> {
 	}
 
 	private DirectedEdge(Vertex<V> left, Vertex<V> right, E content) {
-		super(left, right, content);
+		super(left, right, content, 0, 0);
+	}
+
+	public static <E, V> Edge<E, V> valueOf(Vertex<V> left, Vertex<V> right, E content, int capacity, int flow) {
+        if (left == null || right == null || content == null) {
+            throw new NullPointerException();
+        }
+	    
+		return new DirectedEdge<E, V>(left, right, content, capacity, flow);
+	}
+
+	private DirectedEdge(Vertex<V> left, Vertex<V> right, E content, int capacity, int flow) {
+		super(left, right, content, capacity, flow);
 	}
 
 	public boolean isReachable(Vertex<V> from, Vertex<V> to) {

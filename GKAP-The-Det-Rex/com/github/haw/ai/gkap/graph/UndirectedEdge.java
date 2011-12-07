@@ -18,7 +18,19 @@ public class UndirectedEdge<E, V> extends AbstractEdge<E, V> {
     }
     
 	private UndirectedEdge(Vertex<V> left, Vertex<V> right, E content) {
-		super(left, right, content);
+		super(left, right, content, 0, 0);
+	}
+
+	public static <E, V> Edge<E, V> valueOf(Vertex<V> left, Vertex<V> right, E content, int capacity, int flow) {
+        if (left == null || right == null || content == null) {
+            throw new NullPointerException();
+        }
+        
+        return new UndirectedEdge<E, V>(left, right, content, capacity, flow);
+    }
+    
+	private UndirectedEdge(Vertex<V> left, Vertex<V> right, E content, int capacity, int flow) {
+		super(left, right, content, capacity, flow);
 	}
 
 	public boolean isReachable(Vertex<V> from, Vertex<V> to) {
