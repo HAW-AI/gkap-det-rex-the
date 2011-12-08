@@ -118,6 +118,8 @@ public class FordFulkersonAlgorithm<E,V> {
 								}
 							}
 						}
+						maximizeFlowCurrentVertex = origin;
+						origin = predecessor.get(origin);
 					}
 				}
 				
