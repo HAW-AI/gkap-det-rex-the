@@ -16,6 +16,11 @@ public class FordFulkersonAlgorithm<E,V> {
 	private Graph<E,V> graph;
 	private Vertex<V> source;
 	private Vertex<V> drain;
+	private List<Vertex<V>> inspectedVertices;
+	private Map<Vertex<V>, Integer> flow;
+	private Map<Vertex<V>, Boolean> direction;
+	private Map<Vertex<V>, Vertex<V>> predecessor;
+	private int maximumFlow;
 
 	private FordFulkersonAlgorithm(Graph<E,V> graph, Vertex<V> source, Vertex<V> drain) {
 		this.graph = graph;
@@ -24,27 +29,46 @@ public class FordFulkersonAlgorithm<E,V> {
 	}
 
 	public static <E,V> FordFulkersonAlgorithm<E,V> create(Graph<E,V> graph, Vertex<V> source, Vertex<V> drain) {
+		if (!(graph.vertices().contains(source) && graph.vertices().contains(drain))) {
+			throw new IllegalArgumentException("Source or Drain Vertex is not an element of the given Graph.");
+		}
 		return new FordFulkersonAlgorithm<E,V>(graph, source, drain);
 	}
 	
+	public int maximumFlow() { return maximumFlow; }
 	
+	private void initializeMaps() {
+		// Weise allen Kanten f(eij ) als einen (initialen) Wert zu, der die Nebenbedingungen erfüllt.
+
+		inspectedVertices = new ArrayList<Vertex<V>>();
+		flow = new HashMap<Vertex<V>, Integer>();
+		for (Vertex<V> v : graph.vertices()) {
+			flow.put(v, 0);
+		}
+		// Contains the direction in which you move across a vertex. It is false when backwards, and true when forwards.
+		direction = new HashMap<Vertex<V>, Boolean>();
+		predecessor = new HashMap<Vertex<V>, Vertex<V>>();
+		
+		// Markiere q(uelle/source) mit (undeﬁniert, ∞).
+		predecessor.put(source, null);
+		flow.put(source, Integer.MAX_VALUE);
+		direction.put(source, null);
+	}
 	
-	public int calculateMaximumFlow() {
+	public void calculateMaximumFlow() {
 		// 1. (Initialisierung)
-		// Weise allen Kanten f(eij ) als einen (initialen) Wert zu, der die Nebenbedingungen
-		// erfüllt. Markiere q(uelle/source) mit (undeﬁniert, ∞).
-		Map<Vertex<V>, Integer> flow = new HashMap<Vertex<V>, Integer>();
-		Map<Vertex<V>, Boolean> direction = new HashMap<Vertex<V>, Boolean>();
-		Map<Vertex<V>, Vertex<V>> predecessor = new HashMap<Vertex<V>, Vertex<V>>();
+		initializeMaps();
 		int maximumFlow = 0;
-		List<Vertex<V>> inspectedVertices = new ArrayList<Vertex<V>>();
-		Set<Vertex<V>> uninspectedVertices;
+		
+		Set<Vertex<V>> uninspectedVertices = new HashSet<Vertex<V>>(graph.vertices());
+		uninspectedVertices.removeAll(inspectedVertices);
 		
 		// 2. (Inspektion und Markierung)
 		// (a) Falls alle markierten Ecken inspiziert wurden, gehe nach 4.
-		while (inspectedVertices.size() != graph.vertices().size()) {
+		while (uninspectedVertices.isEmpty()) {
 			uninspectedVertices = new HashSet<Vertex<V>>(graph.vertices());
 			uninspectedVertices.removeAll(inspectedVertices);
+			
 			// (b) Wähle eine beliebige markierte, aber noch nicht inspizierte Ecke vi
 			// 	   und inspiziere sie wie folgt (Berechnung des Inkrements
 			Vertex<V> currentVertex = uninspectedVertices.iterator().next();
@@ -77,13 +101,29 @@ public class FordFulkersonAlgorithm<E,V> {
 			if (inspectedVertices.contains(drain)) {
 				// (Vergrößerung der Flußstärke)
 				// Bei s beginnend läßt sich anhand der Markierungen der gefundene 
-				// vergrößernde Weg bis zur Ecke q rückwärts durchlaufen. Für jede
-				// Vorwärtskante wird f(eij ) um δs erhöht, und für jede 
-				// Rückwärtskante wird f(eji) um δs vermindert. Anschließend werden
-				// bei allen Ecken mit Ausnahme von q die Markierungen entfernt. 
-				// Gehe zu 2.
+				// vergrößernde Weg bis zur Ecke q rückwärts durchlaufen.
+				Vertex<V> maximizeFlowCurrentVertex = drain;
+				int flowincrease = flow.get(drain);
+				if (predecessor.get(maximizeFlowCurrentVertex) != null) {
+					Vertex<V> origin = predecessor.get(maximizeFlowCurrentVertex);
+					while (predecessor.containsKey(origin)) {
+						for (Edge<E,V> e : graph.edges()) {
+							if (e.isReachable(origin, maximizeFlowCurrentVertex) && inspectedVertices.contains(predecessor)) {
+								// Für jede Vorwärtskante wird f(eij ) um δs erhöht, und für jede 
+								// Rückwärtskante wird f(eji) um δs vermindert.
+								if (direction.get(maximizeFlowCurrentVertex)) {
+									e.updateFlow(e.flow() + flowincrease);
+								} else {
+									e.updateFlow(e.flow() - flowincrease);
+								}
+							}
+						}
+					}
+				}
 				
-				// TODO :)
+				// Anschließend werden bei allen Ecken mit Ausnahme von q die Markierungen entfernt.
+				initializeMaps();
+				// Gehe zu 2.
 			}
 		}
 		
@@ -93,6 +133,5 @@ public class FordFulkersonAlgorithm<E,V> {
 		for (Edge<E,V> e : graph.incident(source)) {
 			maximumFlow = e.left().equals(source) ? maximumFlow + e.flow() : maximumFlow - e.flow();
 		}
-		return maximumFlow;
 	}
 }

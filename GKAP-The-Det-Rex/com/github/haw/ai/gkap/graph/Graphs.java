@@ -7,6 +7,10 @@ public class Graphs {
         return DirectedEdge.valueOf(left, right, content);
     }
     
+    public static <E,V> Edge<E,V> directedEdge(Vertex<V> left, Vertex<V> right, E content, int capacity, int flow) {
+    	return DirectedEdge.valueOf(left, right, content, capacity, flow);
+    }
+    
     public static <E, V> Edge<E, V> undirectedEdge(Vertex<V> left, Vertex<V> right, E content) {
         return UndirectedEdge.valueOf(left, right, content);
     }

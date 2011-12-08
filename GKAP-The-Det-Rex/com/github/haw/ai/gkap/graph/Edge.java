@@ -56,4 +56,11 @@ public interface Edge<E,V> {
      * @return the flow of this Edge
      */
     public int flow();
+    
+    /**
+     * Update the Edge's flow
+     * @param the new Value for this edge's flow
+     */
+    
+    public void updateFlow(int newFlow);
 }

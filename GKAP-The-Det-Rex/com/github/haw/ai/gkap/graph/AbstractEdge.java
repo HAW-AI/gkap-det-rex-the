@@ -65,8 +65,16 @@ abstract public class AbstractEdge<E,V> implements Edge<E,V>{
     public int capacity() {
     	return capacity;
     }
-    
+
     public int flow() {
     	return flow;
+    }
+    
+    public void updateFlow(int newFlow) {
+    	if (newFlow <= capacity) {
+			flow = newFlow;
+    	} else {
+			new IllegalArgumentException();
+		}
     }
 }
