@@ -10,7 +10,9 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.github.haw.ai.gkap.algorithms.DepthFirstPathSearch;
 import com.github.haw.ai.gkap.algorithms.FordFulkersonAlgorithm;
+import com.github.haw.ai.gkap.algorithms.PathSearchAlgorithm;
 import com.github.haw.ai.gkap.graph.Edge;
 import com.github.haw.ai.gkap.graph.Graph;
 import com.github.haw.ai.gkap.graph.Graphs;
@@ -19,6 +21,7 @@ import com.github.haw.ai.gkap.graph.Vertex;
 public class FordFulkersonAlgorithmTest {
 
 	FordFulkersonAlgorithm<String,String> ffalgo;
+	Graph<String,String> graph;
 	@Before
 	public void setUp() throws Exception {
 		Vertex<String> q, s, v2, v3, v4, v5;
@@ -46,14 +49,17 @@ public class FordFulkersonAlgorithmTest {
 		List<Vertex<String>> vertexlist = Arrays.asList(q, s, v2, v3, v4, v5);
 		Set<Vertex<String>> vertices = new HashSet<Vertex<String>>(vertexlist);
 		
-		Graph<String,String> graph = Graphs.graph(edges, vertices);
-		ffalgo = FordFulkersonAlgorithm.create(graph, q, s);
+		graph = Graphs.graph(edges, vertices);
+		
+		PathSearchAlgorithm<String,String> pathsearch = DepthFirstPathSearch.create(graph, q, s);
+		
+		ffalgo = FordFulkersonAlgorithm.create(graph, q, s, pathsearch);
 	}
 
 	@Test
 	public void testCalculateMaximumFlow() {
-		ffalgo.calculateMaximumFlow();
-		assertEquals(4, ffalgo.maximumFlow());
+		assertEquals(true, ffalgo.foundMaximumFlow());
+		assertNotSame(graph, ffalgo.graph());
 	}
 
 }
