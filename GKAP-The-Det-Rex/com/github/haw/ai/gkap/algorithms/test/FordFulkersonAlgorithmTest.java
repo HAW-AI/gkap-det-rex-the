@@ -39,7 +39,7 @@ public class FordFulkersonAlgorithmTest {
 		v2v3 = Graphs.directedEdge(v2, v3, "v2v3", 2, 0);
 		v3v4 = Graphs.directedEdge(v3, v4, "v3v4", 1, 0);
 		v4v5 = Graphs.directedEdge(v4, v5, "v4v5", 2, 0);
-		v5v3 = Graphs.directedEdge(v5, v3, "v5v3", 4, 0);
+		v5v3 = Graphs.directedEdge(v5, v3, "v5v3", 1, 0);
 		v5s = Graphs.directedEdge(v5, s, "v5s", 4, 0);
 		v3s = Graphs.directedEdge(v3, s, "v3s", 2, 0);
 		
