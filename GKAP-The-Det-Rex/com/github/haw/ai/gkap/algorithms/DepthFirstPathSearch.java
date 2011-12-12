@@ -1,8 +1,11 @@
 package com.github.haw.ai.gkap.algorithms;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
@@ -89,7 +92,7 @@ public class DepthFirstPathSearch<E,V> implements PathSearchAlgorithm<E,V> {
 						preds.put(nextVertexToBeAdded, new VertexInfo<V>(currentVertex, true));
 						
 						if (nextVertexToBeAdded == target) {
-						    this.path = new PathImpl<V>(augmentingPath);
+						    this.path = makePath(preds);
 							return;
 						}
 						augmentingPath.push(nextVertexToBeAdded);
@@ -113,5 +116,15 @@ public class DepthFirstPathSearch<E,V> implements PathSearchAlgorithm<E,V> {
 			}
 			
 		}
+	}
+	
+	private Path<V> makePath(Map<Vertex<V>, VertexInfo<V>> preds) {
+        List<Vertex<V>> pathList = new LinkedList<Vertex<V>>();
+        for (Vertex<V> v = target; v != source; v = preds.get(v).pred) {
+            pathList.add(v);
+        }
+        pathList.add(source);
+        Collections.reverse(pathList);
+        return new PathImpl<V>(pathList);
 	}
 }
