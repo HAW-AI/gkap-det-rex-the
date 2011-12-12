@@ -57,7 +57,7 @@ public class FordFulkersonAlgorithm<E,V> {
 
 	private void processPath() {
 		Vertex<V> currentVertex = target;
-		int cadidateFlow = Integer.MAX_VALUE;
+		int candidateFlow = Integer.MAX_VALUE;
 		while (currentVertex != source) {
 			Vertex<V> predecessor = pathSearchAlgorithm.path().predecessorVertexOf(currentVertex);
 			int possibleSmallerCandidateFlow = 0;
@@ -69,7 +69,7 @@ public class FordFulkersonAlgorithm<E,V> {
 					possibleSmallerCandidateFlow = e.flow();
 				}
 			}
-			cadidateFlow = possibleSmallerCandidateFlow < cadidateFlow ? possibleSmallerCandidateFlow : cadidateFlow;
+			candidateFlow = possibleSmallerCandidateFlow < candidateFlow ? possibleSmallerCandidateFlow : candidateFlow;
 			currentVertex = predecessor;
 		}
 		
@@ -78,10 +78,10 @@ public class FordFulkersonAlgorithm<E,V> {
 			Vertex<V> predecessor = pathSearchAlgorithm.path().predecessorVertexOf(currentVertex);
 			for (Edge<E,V> e : graph.edges()) {
 				if (e.left() == predecessor && e.right() == currentVertex) {
-					e.updateFlow(e.flow() + cadidateFlow);
+					e.updateFlow(e.flow() + candidateFlow);
 				}
 				if (e.right() == predecessor && e.left() == currentVertex) {
-					e.updateFlow(e.flow() - cadidateFlow);
+					e.updateFlow(e.flow() - candidateFlow);
 				}
 			}
 			currentVertex = predecessor;
