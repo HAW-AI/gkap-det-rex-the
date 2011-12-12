@@ -43,6 +43,17 @@ public class AccessStats<E, V> {
     
     @Override
     public String toString() {
-        return "AccessStats(" + vertexStats + "," + edgeStats + ")";
+        StringBuilder builder = new StringBuilder();
+        builder.append("AccessStats\n");
+        builder.append("Vertices\n");
+        for (Map.Entry<Vertex<V>, Integer> entry : vertexStats.entrySet()) {
+            builder.append("\t" + entry.getKey() + "\t" + entry.getValue() + "\n");
+        }
+        builder.append("Edges\n");
+        for (Map.Entry<Edge<E, V>, Integer> entry : edgeStats.entrySet()) {
+            builder.append("\t" + entry.getKey() + "\t" + entry.getValue() + "\n");
+        }
+        builder.append("\n\n");
+        return builder.toString();
     }
 }
