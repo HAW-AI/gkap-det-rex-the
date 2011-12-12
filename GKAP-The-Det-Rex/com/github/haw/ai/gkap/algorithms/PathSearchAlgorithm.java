@@ -5,7 +5,7 @@ import com.github.haw.ai.gkap.graph.Path;
 import com.github.haw.ai.gkap.graph.Vertex;
 
 public interface PathSearchAlgorithm<E,V> {
-	public Path<Vertex<V>> path();
+	public Path<V> path();
 	public void resetPath();
 	public boolean hasAugmentingPath();
 	public void findAugmentingPath();

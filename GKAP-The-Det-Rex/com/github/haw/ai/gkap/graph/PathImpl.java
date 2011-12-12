@@ -20,10 +20,10 @@ public class PathImpl<V> implements Path<V> {
 		return vertexlist.get(vertexlist.indexOf(otherVertex) + 1);
 	}
 	
-	public static <V> Path<Vertex<V>> create(List<Vertex<V>> input) {
+	public static <V> Path<V> create(List<Vertex<V>> input) {
 		if (input == null){
 			throw new IllegalArgumentException();
 		}
-		return new PathImpl(input);
+		return new PathImpl<V>(input);
 	}
 }
