@@ -44,8 +44,7 @@ public class GraphImpl<E, V> implements Graph<E, V> {
 	@Override
 	public boolean isAdjacent(Vertex<V> vertex, Vertex<V> otherVertex) {
 		for (Edge<E, V> e : edges) {
-			if (e.vertices().contains(vertex)
-					&& e.vertices().contains(otherVertex)) {
+			if ((e.left().equals(vertex) && e.right().equals(otherVertex)) || e.right().equals(vertex) && e.left().equals(otherVertex)) {
 				return true;
 			}
 		}
