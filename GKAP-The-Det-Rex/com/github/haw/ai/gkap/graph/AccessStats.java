@@ -41,15 +41,27 @@ public class AccessStats<E, V> {
         for (int i = 0; i < times; i++) { increment(e); }
     }
     
+    private int totalVertexAccessCount() {
+        int count = 0;
+        for (Integer n : vertexStats.values()) { count += n; }
+        return count;
+    }
+    
+    private int totalEdgeAccessCount() {
+        int count = 0;
+        for (Integer n : edgeStats.values()) { count += n; }
+        return count;
+    }
+    
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
         builder.append("AccessStats\n");
-        builder.append("Vertices\n");
+        builder.append("Vertices (" + totalVertexAccessCount() + ")\n");
         for (Map.Entry<Vertex<V>, Integer> entry : vertexStats.entrySet()) {
             builder.append("\t" + entry.getKey() + "\t" + entry.getValue() + "\n");
         }
-        builder.append("Edges\n");
+        builder.append("Edges (" + totalEdgeAccessCount() + ")\n");
         for (Map.Entry<Edge<E, V>, Integer> entry : edgeStats.entrySet()) {
             builder.append("\t" + entry.getKey() + "\t" + entry.getValue() + "\n");
         }

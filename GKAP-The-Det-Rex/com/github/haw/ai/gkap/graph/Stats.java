@@ -15,6 +15,6 @@ public final class Stats<E, V> {
     
     @Override
     public String toString() {
-        return "Stats\nRuntime: " + runtime + "\n" + accessStats;
+        return "Stats\nRuntime: " + runtime + "ms\n" + accessStats;
     }
 }
