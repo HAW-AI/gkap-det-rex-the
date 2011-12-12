@@ -106,11 +106,7 @@ public class DepthFirstPathSearch<E,V> implements PathSearchAlgorithm<E,V> {
 					if (!visitedVertices.keySet().contains(nextVertexToBeAdded) && e.flow() > 0) {
 						visitedVertices.put(currentVertex, false);
                         preds.put(nextVertexToBeAdded, new VertexInfo<V>(currentVertex, true));
-                        
-                        if (nextVertexToBeAdded == target) {
-                            this.path = new PathImpl<V>(augmentingPath);
-                            return;
-                        }
+
 						augmentingPath.push(nextVertexToBeAdded);
 					}
 				}
