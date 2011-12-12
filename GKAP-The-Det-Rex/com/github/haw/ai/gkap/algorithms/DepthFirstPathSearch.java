@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
+import com.github.haw.ai.gkap.graph.AccessStats;
 import com.github.haw.ai.gkap.graph.Edge;
 import com.github.haw.ai.gkap.graph.Graph;
 import com.github.haw.ai.gkap.graph.Path;
@@ -24,6 +25,7 @@ public class DepthFirstPathSearch<E,V> implements PathSearchAlgorithm<E,V> {
 	private Vertex<V> target;
 	private Map<Vertex<V>,Boolean> visitedVertices;
 	private Stack<Vertex<V>> augmentingPath;
+	private AccessStats<E, V> stats;
 	
 	private DepthFirstPathSearch(Graph<E,V> graph, Vertex<V> source, Vertex<V> target) {
 		this.graph = graph;
@@ -73,6 +75,7 @@ public class DepthFirstPathSearch<E,V> implements PathSearchAlgorithm<E,V> {
 	}
 	
 	public void findAugmentingPath() {
+		stats = new AccessStats<E, V>();
 	    Map<Vertex<V>, VertexInfo<V>> preds;
 	    preds = new HashMap<Vertex<V>, VertexInfo<V>>();
 	    preds.put(source, new VertexInfo<V>(null, true));
@@ -83,16 +86,22 @@ public class DepthFirstPathSearch<E,V> implements PathSearchAlgorithm<E,V> {
 		
 		while (!augmentingPath.empty()) {
 			Vertex<V> currentVertex = augmentingPath.pop();
+			stats.increment(currentVertex);
 			Iterator<Edge<E,V>> currentVertexEdgesIterator = graph.incident(currentVertex).iterator();
 			// forwards
 			while(currentVertexEdgesIterator.hasNext()) {
 				Edge<E,V> e = currentVertexEdgesIterator.next();
+				stats.increment(e);
 				if (e.left() == currentVertex) {
+					stats.increment(e);
+					stats.increment(e.left());
 					Vertex<V> nextVertexToBeAdded = e.right();
+					stats.increment(e.right());
 					if (!visitedVertices.keySet().contains(nextVertexToBeAdded) && e.capacity() > e.flow()) {
 						visitedVertices.put(currentVertex, true);
 						preds.put(nextVertexToBeAdded, new VertexInfo<V>(currentVertex, true));
 						
+						stats.increment(target);
 						if (nextVertexToBeAdded == target) {
 						    this.path = makePath(preds);
 							return;
@@ -106,8 +115,12 @@ public class DepthFirstPathSearch<E,V> implements PathSearchAlgorithm<E,V> {
 			currentVertexEdgesIterator = graph.incident(currentVertex).iterator();
 			while(currentVertexEdgesIterator.hasNext()) {
 				Edge<E,V> e = currentVertexEdgesIterator.next();
+				stats.increment(e);
 				if (e.right() == currentVertex) {
+					stats.increment(e);
+					stats.increment(e.right());
 					Vertex<V> nextVertexToBeAdded = e.left();
+					stats.increment(e.left());
 					if (!visitedVertices.keySet().contains(nextVertexToBeAdded) && e.flow() > 0) {
 						visitedVertices.put(currentVertex, false);
                         preds.put(nextVertexToBeAdded, new VertexInfo<V>(currentVertex, true));
@@ -131,5 +144,10 @@ public class DepthFirstPathSearch<E,V> implements PathSearchAlgorithm<E,V> {
         pathList.add(source);
         Collections.reverse(pathList);
         return new PathImpl<V>(pathList);
+	}
+
+	@Override
+	public AccessStats<E, V> stats() {
+		return new AccessStats<E, V>(stats);
 	}
 }

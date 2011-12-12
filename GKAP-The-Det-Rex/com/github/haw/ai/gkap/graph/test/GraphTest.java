@@ -101,10 +101,10 @@ public class GraphTest {
 		a2.add(v1); a2.add(v2); a2.add(v5);
 		
 		Set<Vertex<String>> a3 = new HashSet<Vertex<String>>();
-		a3.add(v1); a3.add(v2); a3.add(v3);
+		a3.add(v1); a3.add(v3);
 		
 		Set<Vertex<String>> a4 = new HashSet<Vertex<String>>();
-		a4.add(v1); a4.add(v3); a4.add(v5);
+		a4.add(v1); a4.add(v3);
 		
 		assertEquals(a1, this.g1.adjacent(v1));
 		assertEquals(a2, this.g2.adjacent(v1));

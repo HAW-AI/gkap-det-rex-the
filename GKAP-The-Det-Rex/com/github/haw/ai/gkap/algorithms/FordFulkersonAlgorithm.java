@@ -2,8 +2,10 @@ package com.github.haw.ai.gkap.algorithms;
 
 import java.util.Set;
 
+import com.github.haw.ai.gkap.graph.AccessStats;
 import com.github.haw.ai.gkap.graph.Edge;
 import com.github.haw.ai.gkap.graph.Graph;
+import com.github.haw.ai.gkap.graph.Stats;
 import com.github.haw.ai.gkap.graph.Vertex;
 
 public class FordFulkersonAlgorithm<E,V> {
@@ -12,6 +14,7 @@ public class FordFulkersonAlgorithm<E,V> {
 	private PathSearchAlgorithm<E,V> pathSearchAlgorithm;
 	private Graph<E, V> graph;
 	private Vertex<V> target;
+	private Stats<E, V> stats;
 	
 	private FordFulkersonAlgorithm(Graph<E,V> graph, Vertex<V> source, Vertex<V> target, PathSearchAlgorithm<E,V> pathSearchAlgorithm) {
 		this.graph = graph;
@@ -45,6 +48,7 @@ public class FordFulkersonAlgorithm<E,V> {
 	}
 	
 	public boolean foundMaximumFlow() {
+		Long startTime = System.currentTimeMillis();
 		boolean augmented = false;
 		pathSearchAlgorithm.findAugmentingPath();
 		while (pathSearchAlgorithm.hasAugmentingPath()) {
@@ -52,6 +56,10 @@ public class FordFulkersonAlgorithm<E,V> {
 			augmented = true;
 			pathSearchAlgorithm.findAugmentingPath();
 		}
+		Long endTime = System.currentTimeMillis();
+		this.stats = new Stats<E, V>(this.pathSearchAlgorithm.stats(), endTime-startTime);
+		System.out.println("Stats Ford Fulkerson:\n");
+		System.out.println(this.stats);
 		return augmented;
 	}
 
