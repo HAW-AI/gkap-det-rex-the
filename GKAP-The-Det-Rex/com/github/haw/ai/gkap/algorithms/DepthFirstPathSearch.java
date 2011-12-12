@@ -38,6 +38,11 @@ public class DepthFirstPathSearch<E,V> implements PathSearchAlgorithm<E,V> {
 		}
 		return new DepthFirstPathSearch<E, V>(graph, source, target);
 	}
+	
+	@Override
+	public Set<Vertex<V>> visitedVertices() {
+	    return visitedVertices.keySet();
+	}
 
 	@Override
 	public void resetPath() {
@@ -75,6 +80,7 @@ public class DepthFirstPathSearch<E,V> implements PathSearchAlgorithm<E,V> {
 	    Map<Vertex<V>, VertexInfo<V>> preds;
 	    preds = new HashMap<Vertex<V>, VertexInfo<V>>();
 	    preds.put(source, new VertexInfo<V>(null, true));
+	    visitedVertices.clear();
 	    
 		augmentingPath = new Stack<Vertex<V>>();
 		augmentingPath.push(source);
@@ -116,6 +122,9 @@ public class DepthFirstPathSearch<E,V> implements PathSearchAlgorithm<E,V> {
 			}
 			
 		}
+
+		// no path found
+		this.path = null;
 	}
 	
 	private Path<V> makePath(Map<Vertex<V>, VertexInfo<V>> preds) {

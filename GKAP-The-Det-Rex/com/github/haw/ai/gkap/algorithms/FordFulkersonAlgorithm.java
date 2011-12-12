@@ -1,5 +1,7 @@
 package com.github.haw.ai.gkap.algorithms;
 
+import java.util.Set;
+
 import com.github.haw.ai.gkap.graph.Edge;
 import com.github.haw.ai.gkap.graph.Graph;
 import com.github.haw.ai.gkap.graph.Vertex;
@@ -16,6 +18,30 @@ public class FordFulkersonAlgorithm<E,V> {
 		this.source = source;
 		this.target = target;
 		this.pathSearchAlgorithm = pathSearchAlgorithm;
+	}
+	
+	public int maxFlow() {
+	    // foundMaximumFlow() must have been called before
+	    Set<Vertex<V>> left = pathSearchAlgorithm.visitedVertices();
+	    Set<Vertex<V>> right = graph.vertices();
+	    right.removeAll(left);
+	    
+	    int flow = 0;
+	    
+	    // cut
+	    for (Vertex<V> v : left) {
+	        for (Edge<E, V> e : graph.incident(v)) {
+	            if (left.contains(e.left()) && right.contains(e.right())) {
+	                // forward edge
+	                flow += e.flow();
+	            } else if (right.contains(e.left()) && left.contains(e.right())) {
+	                // backward edge
+	                flow -= e.flow();
+	            }
+	        }
+	    }
+	    
+	    return flow;
 	}
 	
 	public boolean foundMaximumFlow() {

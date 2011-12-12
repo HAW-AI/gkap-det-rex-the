@@ -59,7 +59,8 @@ public class FordFulkersonAlgorithmTest {
 	@Test
 	public void testCalculateMaximumFlow() {
 		assertEquals(true, ffalgo.foundMaximumFlow());
-		assertNotSame(graph, ffalgo.graph());
+//		assertNotSame(graph, ffalgo.graph());
+		assertEquals(4, ffalgo.maxFlow());
 	}
 
 }
