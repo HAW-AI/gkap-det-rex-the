@@ -108,5 +108,9 @@ public class FordFulkersonAlgorithm<E,V> {
 	public Graph<E,V> graph() {
 		return graph;
 	}
+	
+	public Stats<E, V> stats() {
+		return new Stats<E, V>(this.stats);
+	}
 
 }
