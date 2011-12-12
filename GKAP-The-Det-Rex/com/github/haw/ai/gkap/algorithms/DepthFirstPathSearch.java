@@ -51,11 +51,7 @@ public class DepthFirstPathSearch<E,V> implements PathSearchAlgorithm<E,V> {
 
 	@Override
 	public boolean hasAugmentingPath() {
-		if (path == null) {
-			return false;
-		} else {
-			return true;
-		}
+	    return path != null;
 	}
 
 	@Override
