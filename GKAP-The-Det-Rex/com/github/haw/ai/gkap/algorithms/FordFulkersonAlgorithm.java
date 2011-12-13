@@ -49,13 +49,18 @@ public class FordFulkersonAlgorithm<E,V> {
 	
 	public boolean foundMaximumFlow() {
 		Long startTime = System.currentTimeMillis();
-		boolean augmented = false;
-		pathSearchAlgorithm.findAugmentingPath();
-		while (pathSearchAlgorithm.hasAugmentingPath()) {
-			processPath();
-			augmented = true;
-			pathSearchAlgorithm.findAugmentingPath();
-		}
+        boolean augmented = false;
+//		for (int i = 0; i < 1; ++i) {
+    		pathSearchAlgorithm.findAugmentingPath();
+    		while (pathSearchAlgorithm.hasAugmentingPath()) {
+    			processPath();
+    			augmented = true;
+    			pathSearchAlgorithm.findAugmentingPath();
+    		}
+//    		for (Edge<E,V> e : graph.edges()) {
+//    		    e.updateFlow(0);
+//    		}
+//		}
 		Long endTime = System.currentTimeMillis();
 		this.stats = new Stats<E, V>(this.pathSearchAlgorithm.stats(), endTime-startTime);
 		System.out.println("Stats Ford Fulkerson:\n");

@@ -10,6 +10,8 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.github.haw.ai.gkap.algorithms.AbstractPathSearchAlgorithm;
+import com.github.haw.ai.gkap.algorithms.BreadthFirstPathSearch;
 import com.github.haw.ai.gkap.algorithms.DepthFirstPathSearch;
 import com.github.haw.ai.gkap.algorithms.FordFulkersonAlgorithm;
 import com.github.haw.ai.gkap.algorithms.PathSearchAlgorithm;
@@ -51,7 +53,7 @@ public class FordFulkersonAlgorithmTest {
 		
 		graph = Graphs.graph(edges, vertices);
 		
-		PathSearchAlgorithm<String,String> pathsearch = DepthFirstPathSearch.create(graph, q, s);
+		PathSearchAlgorithm<String,String> pathsearch = BreadthFirstPathSearch.create(graph, q, s);
 		
 		ffalgo = FordFulkersonAlgorithm.create(graph, q, s, pathsearch);
 	}
