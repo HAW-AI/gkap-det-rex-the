@@ -58,8 +58,6 @@ public class FordFulkersonAlgorithm<E,V> {
 		}
 		Long endTime = System.currentTimeMillis();
 		this.stats = new Stats<E, V>(this.pathSearchAlgorithm.stats(), endTime-startTime);
-		System.out.println("Stats Ford Fulkerson:\n");
-		System.out.println(this.stats);
 		return augmented;
 	}
 
