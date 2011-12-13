@@ -22,11 +22,12 @@ import com.github.haw.ai.gkap.graph.Vertex;
 
 public class FordFulkersonAlgorithmTest {
 
-	FordFulkersonAlgorithm<String,String> ffalgo;
 	Graph<String,String> graph;
+	Vertex<String> q, s;
+	
 	@Before
 	public void setUp() throws Exception {
-		Vertex<String> q, s, v2, v3, v4, v5;
+		Vertex<String> v2, v3, v4, v5;
 		q = Graphs.vertex("q");
 		s = Graphs.vertex("s");
 		v2 = Graphs.vertex("v2");
@@ -52,18 +53,27 @@ public class FordFulkersonAlgorithmTest {
 		Set<Vertex<String>> vertices = new HashSet<Vertex<String>>(vertexlist);
 		
 		graph = Graphs.graph(edges, vertices);
-		
-		PathSearchAlgorithm<String,String> pathsearch = BreadthFirstPathSearch.create(graph, q, s);
-		
-		ffalgo = FordFulkersonAlgorithm.create(graph, q, s, pathsearch);
 	}
 
-	@Test
-	public void testCalculateMaximumFlow() {
-		assertEquals(true, ffalgo.foundMaximumFlow());
-		assertEquals(4, ffalgo.maxFlow());
-		System.out.println("Stats Ford Fulkerson:\n");
-		System.out.println(ffalgo.stats());
-	}
+    @Test
+    public void testCalculateMaximumFlowDepthFirst() {
+        innerTestCalculateMaximumFlow(DepthFirstPathSearch.create(graph, q, s), "Ford-Fulkerson");
+    }
+
+    @Test
+    public void testCalculateMaximumFlowBreadthFirst() {
+        innerTestCalculateMaximumFlow(BreadthFirstPathSearch.create(graph, q, s), "Edmonds-Karp");
+    }
+    
+    public void innerTestCalculateMaximumFlow(PathSearchAlgorithm<String, String> pathsearch, String title) {
+        FordFulkersonAlgorithm<String,String> ffalgo =
+            FordFulkersonAlgorithm.create(graph, q, s, pathsearch);
+        
+        assertEquals(true, ffalgo.foundMaximumFlow());
+        assertEquals(4, ffalgo.maxFlow());
+        
+        System.out.println(title + "\n");
+        System.out.println(ffalgo.stats());
+    }
 
 }
