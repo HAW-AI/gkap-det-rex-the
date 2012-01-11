@@ -1,5 +1,11 @@
 package com.github.haw.ai.gkap.graph;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.Stack;
+
 /**
  * @author Till Theis <till.theis@haw-hamburg.de>
  * @author Patrick Detlefsen <patrick.detlefsen@haw-hamburg.de>
@@ -73,5 +79,52 @@ public class UndirectedEdge<E, V> extends AbstractEdge<E, V> {
         } else if (!vertices().equals(other.vertices()))
             return false;
         return true;
+    }
+    
+    public boolean isBridge(Graph<E, V> g) {
+    	boolean result = false;
+
+    	// defensive copy
+    	Set<Edge<E, V>> edgesWithoutSelf = g.edges();
+    	edgesWithoutSelf.remove(this);
+
+    	Graph<E, V> graph = Graphs.graph(edgesWithoutSelf, g.vertices());
+
+    	Set<Vertex<V>> unvisitedVertices = graph.vertices();
+    	Set<Vertex<V>> visitedVertices = new HashSet<Vertex<V>>();
+    	Stack<Vertex<V>> stack = new Stack<Vertex<V>>();
+
+    	if (unvisitedVertices.iterator().hasNext()) {
+        	stack.push(unvisitedVertices.iterator().next());
+    	}
+
+		while(!stack.isEmpty()) {
+    		Vertex<V> currentVertex = stack.peek();
+    		Vertex<V> unvisitedChildVertex = getUnvisitedChildVertex(graph, unvisitedVertices, currentVertex);
+
+    		if(unvisitedChildVertex != null) {
+    			visitedVertices.add(unvisitedChildVertex);
+    			unvisitedVertices.remove(unvisitedChildVertex);
+    			stack.push(unvisitedChildVertex);
+    		} else {
+    			stack.pop();
+    		}
+    	}
+    	if (visitedVertices.equals(graph.vertices())) {
+    		result = true;
+    	}
+
+    	return result;
+    }
+
+    // needed for isBridge()
+    private Vertex<V> getUnvisitedChildVertex(Graph<E, V> graph, Set<Vertex<V>> unvisitedVertices, Vertex<V> currentVertex) {
+    	Set<Vertex<V>> unvisitedChildVertices = graph.adjacent(currentVertex);
+    	unvisitedChildVertices.removeAll(unvisitedVertices);
+    	if (unvisitedChildVertices.iterator().hasNext()) {
+    		return unvisitedChildVertices.iterator().next();
+    	} else {
+    		return null;
+    	}    	
     }
 }
