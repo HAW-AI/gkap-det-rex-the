@@ -4,9 +4,16 @@ package com.github.haw.ai.gkap.graph.test;
  * @author Till Theis <till.theis@haw-hamburg.de>
  */
 import static org.junit.Assert.*;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.junit.Before;
 import org.junit.Test;
 import com.github.haw.ai.gkap.graph.*;
+
 import static com.github.haw.ai.gkap.graph.Graphs.*;
 import static java.util.Arrays.asList;
 
@@ -107,5 +114,40 @@ public class UndirectedEdgeTest {
         assertFalse(e4.equals(e5));
         assertFalse(e5.equals(e4));
     }
+    
+    @Test
+    public void testIsBridge() {
+        Vertex<String> vertex1, vertex2, vertex3, vertex4, vertex5, vertex6;
+        Edge<Integer, String> edge1, edge2, edge3, edge4, edge5, edge6, edge7;
+        
+        vertex1 = vertex("vertex1");
+        vertex2 = vertex("vertex2");
+        vertex3 = vertex("vertex3");
+        vertex4 = vertex("vertex4");
+        vertex5 = vertex("vertex5");
+        vertex6 = vertex("vertex6");
+        
+        edge1 = undirectedEdge(vertex1, vertex2, 1);
+        edge2 = undirectedEdge(vertex1, vertex3, 1);
+        edge3 = undirectedEdge(vertex2, vertex3, 1);
+        edge4 = undirectedEdge(vertex3, vertex4, 1); // bridge
+        edge5 = undirectedEdge(vertex4, vertex5, 1);
+        edge6 = undirectedEdge(vertex5, vertex6, 1);
+        edge7 = undirectedEdge(vertex4, vertex6, 1);
+        
+        Set<Edge<Integer,String>> edges = new HashSet<Edge<Integer,String>>(Arrays.asList(edge1, edge2, edge3, edge4, edge5, edge6, edge7));
+        Set<Vertex<String>> vertices = new HashSet<Vertex<String>>(Arrays.asList(vertex1, vertex2, vertex3, vertex4, vertex5, vertex6));
+        
+        Graph<Integer, String> bridgeGraph = Graphs.graph(edges, vertices);
+        
+        assertFalse(edge1.isBridge(bridgeGraph));
+        assertFalse(edge2.isBridge(bridgeGraph));
+        assertFalse(edge3.isBridge(bridgeGraph));
+        assertFalse(edge5.isBridge(bridgeGraph));
+        assertFalse(edge6.isBridge(bridgeGraph));
+        assertFalse(edge7.isBridge(bridgeGraph));
+        
+        assertTrue(edge4.isBridge(bridgeGraph));
+	}
 
 }

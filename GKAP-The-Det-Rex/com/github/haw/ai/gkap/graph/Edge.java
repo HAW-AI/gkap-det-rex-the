@@ -63,4 +63,6 @@ public interface Edge<E,V> {
      */
     
     public void updateFlow(int newFlow);
+
+	public boolean isBridge(Graph<E,V> graph);
 }

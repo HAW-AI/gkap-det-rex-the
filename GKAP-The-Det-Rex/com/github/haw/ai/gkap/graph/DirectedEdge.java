@@ -84,4 +84,9 @@ public class DirectedEdge<E, V> extends AbstractEdge<E, V> {
     public boolean isDirected() {
     	return true;
     }
+
+	@Override
+	public boolean isBridge(Graph<E,V> graph) {
+		throw new RuntimeException("Directed Graphs do not have bridge edges.");
+	}
 }

@@ -1,8 +1,6 @@
 package com.github.haw.ai.gkap.graph;
 
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
@@ -82,7 +80,7 @@ public class UndirectedEdge<E, V> extends AbstractEdge<E, V> {
     }
     
     public boolean isBridge(Graph<E, V> g) {
-    	boolean result = false;
+    	boolean result = true;
 
     	// defensive copy
     	Set<Edge<E, V>> edgesWithoutSelf = g.edges();
@@ -100,7 +98,7 @@ public class UndirectedEdge<E, V> extends AbstractEdge<E, V> {
 
 		while(!stack.isEmpty()) {
     		Vertex<V> currentVertex = stack.peek();
-    		Vertex<V> unvisitedChildVertex = getUnvisitedChildVertex(graph, unvisitedVertices, currentVertex);
+    		Vertex<V> unvisitedChildVertex = getUnvisitedChildVertex(graph, visitedVertices, currentVertex);
 
     		if(unvisitedChildVertex != null) {
     			visitedVertices.add(unvisitedChildVertex);
@@ -110,17 +108,18 @@ public class UndirectedEdge<E, V> extends AbstractEdge<E, V> {
     			stack.pop();
     		}
     	}
+		
     	if (visitedVertices.equals(graph.vertices())) {
-    		result = true;
+    		result = false;
     	}
 
     	return result;
     }
 
     // needed for isBridge()
-    private Vertex<V> getUnvisitedChildVertex(Graph<E, V> graph, Set<Vertex<V>> unvisitedVertices, Vertex<V> currentVertex) {
+    private Vertex<V> getUnvisitedChildVertex(Graph<E, V> graph, Set<Vertex<V>> visitedVertices, Vertex<V> currentVertex) {
     	Set<Vertex<V>> unvisitedChildVertices = graph.adjacent(currentVertex);
-    	unvisitedChildVertices.removeAll(unvisitedVertices);
+    	unvisitedChildVertices.removeAll(visitedVertices);
     	if (unvisitedChildVertices.iterator().hasNext()) {
     		return unvisitedChildVertices.iterator().next();
     	} else {
