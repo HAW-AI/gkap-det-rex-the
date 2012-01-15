@@ -29,7 +29,8 @@ public class HamiltonianPath {
      * Find a hamiltonian path in a given graph.
      * If a path is found hamiltonianPath(g).size() == g.vertices().size()+1
      * because the first and last element of the path are connected
-     * (start==finish).
+     * (start==finish) (but if g.vertices().size()==1 then
+     * hamiltonianPath(g).size()==1 too).
      * 
      * @param graph a graph
      * @return the found hamiltonian path or an empty path if not found.

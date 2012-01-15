@@ -39,16 +39,20 @@ public class HamiltonianPathTest {
         es.add(undirectedEdge(vertex("V3"), vertex("V5"), "E7"));
         es.add(undirectedEdge(vertex("V4"), vertex("V5"), "E8"));
         graph = graph(es, vs);
+        
+        graph2 = graph(new HashSet<Edge<String, String>>(), new HashSet<Vertex<String>>(asList(vertex("V1"))));
     }
 
     @Test
     public void testHamiltonianPath() {
         List<Vertex<String>> path = hamiltonianPath(graph);
         assertTrue(path.containsAll(graph.vertices()) && path.size() == graph.vertices().size()+1);
-        System.out.println(path);
         
         List<Vertex<String>> path1 = hamiltonianPath(graph1);
         assertTrue(path1.isEmpty());
+
+        List<Vertex<String>> path2 = hamiltonianPath(graph2);
+        assertEquals(2, path2.size());
     }
 
 }
