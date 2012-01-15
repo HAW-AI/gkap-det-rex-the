@@ -20,6 +20,7 @@ public class HamiltonianPathTest {
 
     Graph<String, String> graph;
     Graph<String, String> graph1;
+    Graph<String, String> graph2;
     
 
     @Before
@@ -43,7 +44,8 @@ public class HamiltonianPathTest {
     @Test
     public void testHamiltonianPath() {
         List<Vertex<String>> path = hamiltonianPath(graph);
-        assertTrue(path.containsAll(graph.vertices()) && path.size() == graph.vertices().size());
+        assertTrue(path.containsAll(graph.vertices()) && path.size() == graph.vertices().size()+1);
+        System.out.println(path);
         
         List<Vertex<String>> path1 = hamiltonianPath(graph1);
         assertTrue(path1.isEmpty());
