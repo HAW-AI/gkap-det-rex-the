@@ -52,7 +52,7 @@ public class HamiltonianPathTest {
         assertTrue(path1.isEmpty());
 
         List<Vertex<String>> path2 = hamiltonianPath(graph2);
-        assertEquals(2, path2.size());
+        assertEquals(1, path2.size());
     }
 
 }
