@@ -49,6 +49,12 @@ public interface Graph<E,V> {
    */
   public Set<Vertex<V>> vertices();
   
+  /**
+   * @return true if the Graph is an Euler Graph
+   * assumes connected Graph
+   */
+  public boolean isEuler();
+  
   
   // stats ...
   public Set<Vertex<V>> adjacent(Vertex<V> vertex, AccessStats<E, V> stats);

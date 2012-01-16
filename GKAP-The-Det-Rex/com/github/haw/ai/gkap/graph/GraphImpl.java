@@ -234,4 +234,15 @@ public class GraphImpl<E, V> implements Graph<E, V> {
         }
         return false;
     }
+
+	@Override
+	public boolean isEuler() {
+		boolean result = true;
+		for (Vertex<V> vertex : this.vertices()) {
+			if (this.degree(vertex) % 2 != 0) {
+				return false;
+			}
+		}
+		return result;
+	}
 }
