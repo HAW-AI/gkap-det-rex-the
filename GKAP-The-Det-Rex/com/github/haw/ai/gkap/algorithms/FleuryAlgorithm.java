@@ -10,10 +10,10 @@ import com.github.haw.ai.gkap.graph.Vertex;
 
 public class FleuryAlgorithm<E,V> {
 	private Graph<E, V> graph;
-	private List<Vertex<V>> path;
+	private List<Edge<E, V>> path;
 	private HashSet<Edge<E, V>> marked;
 	
-	public static <E, V> List<Vertex<V>> fleuryPath(Graph graph) {
+	public static <E, V> List<Edge<E, V>> fleuryPath(Graph graph) {
 		FleuryAlgorithm<E, V> result = new FleuryAlgorithm<E, V>(graph);
 		result.runAlgorithm();
 		return result.path();
@@ -26,7 +26,7 @@ public class FleuryAlgorithm<E,V> {
 		this.marked = new HashSet<Edge<E,V>>();
 		Set<Edge<E,V>> unbridged = null;
 		Set<Edge<E,V>> incidented = null;
-		this.path = new ArrayList<Vertex<V>>();
+		this.path = new ArrayList<Edge<E, V>>();
 		Edge<E,V> edge = null;
 		
 		if (graph.vertices().isEmpty()) return; 
@@ -51,13 +51,13 @@ public class FleuryAlgorithm<E,V> {
 			// 3. Markiere die gewählte Kante und füge sie der Kantenfolge hinzu.
 			marked.add(edge);
 			// 4. Wähle den anderen Knoten der gewählten Kante als neuen aktuellen Knoten.
-			this.path.add(current);
+			this.path.add(edge);
 			current = edge.otherVertex(current);
 		} 
 	}
 	
-	public HashSet<Edge<E, V>> path() {
-		return this.marked;
+	public List<Edge<E, V>> path() {
+		return this.path;
 	}
 	
 	private Set<Edge<E,V>> unbridged(Set<Edge<E,V>> edges) {
