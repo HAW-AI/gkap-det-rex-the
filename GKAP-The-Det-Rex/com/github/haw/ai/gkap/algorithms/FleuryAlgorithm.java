@@ -32,7 +32,7 @@ public class FleuryAlgorithm<E,V> {
 		if (graph.vertices().isEmpty()) return; 
 		
 		// 1. Wähle einen beliebigen Knoten als aktuellen Knoten.
-		Vertex<V> current = graph.vertices().iterator().next();
+		Vertex<V> current = startVertex();
 		
 		// 5. Wenn noch unmarkierte Kanten existieren, dann gehe zu Schritt 2.
 		while (marked.size() < graph.edges().size()) {
@@ -52,17 +52,26 @@ public class FleuryAlgorithm<E,V> {
 				else {
 					System.out.println("sorry, no edge left");
 					System.out.println(path);
-					System.exit(-1);
+					break;
 				}
 			}
 			// 3. Markiere die gewählte Kante und füge sie der Kantenfolge hinzu.
 			marked.add(edge);
+			path.add(edge);
 			// 4. Wähle den anderen Knoten der gewählten Kante als neuen aktuellen Knoten.
-			this.path.add(edge);
 			current = edge.otherVertex(current);
 		} 
 	}
 	
+	private Vertex<V> startVertex() {
+		for (Vertex<V> v : graph.vertices()) {
+			if (graph.incident(v).size() % 2 == 1) {
+				return v;
+			}
+		}
+		return graph.vertices().iterator().next();
+	}
+
 	public List<Edge<E, V>> path() {
 		return this.path;
 	}
