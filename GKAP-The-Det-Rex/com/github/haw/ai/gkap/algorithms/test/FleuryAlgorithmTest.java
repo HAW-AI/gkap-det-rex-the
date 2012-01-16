@@ -7,6 +7,7 @@ import static org.junit.Assert.*;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -49,7 +50,11 @@ public class FleuryAlgorithmTest {
 
 	@Test
 	public void testFleuryAlgorithm() {
-        List<Vertex<String>> path1 = fleuryPath(graph);
-        assertTrue(path1.isEmpty());
+        List<Edge<Object, Object>> path1 = fleuryPath(graph);
+        assertFalse(path1.isEmpty());
+        // path has all the edges that are present in the graph => all edges visited
+        assertEquals(graph.edges().size(), path1.size());
+        // Haus vom Nikolaus has no EulerCycle
+        assertFalse(graph.isEuler());
 	}
 }
