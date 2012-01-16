@@ -32,6 +32,8 @@ public class FleuryAlgorithm<E,V> {
 		if (graph.vertices().isEmpty()) return; 
 		
 		// 1. Wähle einen beliebigen Knoten als aktuellen Knoten.
+		// We start with a vertex of odd degree—if the graph has none, 
+		// then start with any vertex.
 		Vertex<V> current = startVertex();
 		
 		// 5. Wenn noch unmarkierte Kanten existieren, dann gehe zu Schritt 2.
