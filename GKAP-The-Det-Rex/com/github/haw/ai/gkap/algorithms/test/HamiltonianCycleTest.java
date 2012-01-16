@@ -15,7 +15,7 @@ import org.junit.Test;
 import com.github.haw.ai.gkap.graph.*;
 import static com.github.haw.ai.gkap.graph.Graphs.*;
 
-import static com.github.haw.ai.gkap.algorithms.HamiltonianCycle.hamiltonianCycle;
+import static com.github.haw.ai.gkap.algorithms.HamiltonianCycle.*;
 
 public class HamiltonianCycleTest {
 

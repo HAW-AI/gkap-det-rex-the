@@ -9,20 +9,7 @@ import java.util.Stack;
 import com.github.haw.ai.gkap.graph.*;
 
 public class HamiltonianCycle {
-    private static class Pair<T,U> {
-        public final T _1;
-        public final U _2;
-        public Pair(T l, U r) { _1 = l; _2 = r; }
-        @Override public String toString() { return "(" + _1 + "," + _2 + ")"; }
-        @Override public int hashCode() { return 41 * (41 + _1.hashCode()) + _2.hashCode(); }
-        @Override public boolean equals(Object o) {
-            if (o == null || !(o instanceof Pair<?,?>)) return false;
-            Pair<?,?> p = (Pair<?,?>)o;
-            return ((_1 == null ? p._1 == null : _1.equals(p._1)) &&
-                    (_2 == null ? p._2 == null : _2.equals(p._2)));
-        }
-    }
-    
+
     /**
      * Find a hamiltonian cycle in a given graph.
      * If a path is found hamiltonianCycle(g).size() == g.vertices().size()+1
@@ -33,11 +20,18 @@ public class HamiltonianCycle {
      * @param graph a graph
      * @return the found hamiltonian cycle or an empty path if not found.
      */
-    public static <V> List<Vertex<V>> hamiltonianCycle(Graph<?, V> graph) {
+    public static <E,V> List<Vertex<V>> hamiltonianCycle(Graph<E, V> graph) {        
+        return loggedHamiltonianCycle(graph)._1;
+    }
+    
+    public static <E,V> Pair<List<Vertex<V>>, Stats<E, V>> loggedHamiltonianCycle(Graph<E, V> graph) {
+        long start = System.currentTimeMillis();
+        AccessStats<E, V> stats = new AccessStats<E, V>();
+        
         List<Vertex<V>> vs = new ArrayList<Vertex<V>>(graph.vertices());
         
         if (vs.size() <= 1) {
-            return vs;
+            return pair(vs, new Stats<E, V>(stats, System.currentTimeMillis()-start));
         }
         
         // Pair< NeighborList, CurrentNeighborIndex >
@@ -48,6 +42,7 @@ public class HamiltonianCycle {
         cycle.push(pair(list(vs), 0));
         
         Vertex<V> root = vs.get(0);
+        stats.increment(root);
         
         while (!(cycle.size() == vs.size() &&
                graph.isAdjacent(root, cycle.peek()._1.get(cycle.peek()._2))))
@@ -60,7 +55,7 @@ public class HamiltonianCycle {
             boolean foundNext = false;
             for (int i = 0; i < nextNeighbors.size() && !foundNext; ++i) {
                 Vertex<V> nextNeigbor = nextNeighbors.get(i);
-                if (!containsVertex(cycle, nextNeigbor)) {
+                if (!containsVertex(cycle, nextNeigbor, stats)) {
                     cycle.push(pair(nextNeighbors, i));
                     foundNext = true;
                 }
@@ -68,12 +63,13 @@ public class HamiltonianCycle {
             
             while (!foundNext) {
                 // unwind and continue at previous level
-                if (idx+1 < neighbors.size() && !containsVertex(cycle, neighbors.get(idx+1))) {
+                if (idx+1 < neighbors.size() && !containsVertex(cycle, neighbors.get(idx+1), stats)) {
                     cycle.pop();
                     cycle.push(pair(neighbors, idx+1));
                     foundNext = true;
                 } else if (cycle.isEmpty()) {
-                    return new ArrayList<Vertex<V>>();
+                    return pair((List<Vertex<V>>)new ArrayList<Vertex<V>>(),
+                                 new Stats<E, V>(stats, System.currentTimeMillis()-start));
                 } else {
                     cycle.pop();
                 }
@@ -88,7 +84,7 @@ public class HamiltonianCycle {
         }
         Collections.reverse(list);
         
-        return list;
+        return pair(list, new Stats<E, V>(stats, System.currentTimeMillis()-start));
     }
     
     private static <T, U> Pair<T, U> pair(T l, U r) {
@@ -99,9 +95,11 @@ public class HamiltonianCycle {
         return new ArrayList<E>(col);
     }
     
-    private static <V> boolean containsVertex(Stack<Pair<List<Vertex<V>>, Integer>> coll, Vertex<V> v) {
+    private static <V> boolean containsVertex(Stack<Pair<List<Vertex<V>>, Integer>> coll, Vertex<V> v, AccessStats<?, V> stats) {
         if (v == null) return false;
+        stats.increment(v);
         for (Pair<List<Vertex<V>>, Integer> p : coll) {
+            stats.increment(p._1.get(p._2));
             if (v.equals(p._1.get(p._2))) return true;
         }
         return false;
