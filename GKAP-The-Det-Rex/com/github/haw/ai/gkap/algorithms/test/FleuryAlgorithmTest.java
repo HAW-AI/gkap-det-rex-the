@@ -24,6 +24,8 @@ public class FleuryAlgorithmTest {
 	Vertex<String> vertex1, vertex2, vertex3, vertex4, vertex5;
     Edge<Integer, String> edge1, edge2, edge3, edge4, edge5, edge6, edge7, edge8;
     Graph<Integer, String> graph;
+    Set<Edge<Integer,String>> edges;
+    Set<Vertex<String>> vertices;
 
 	@Before
 	public void setUp() throws Exception {
@@ -42,8 +44,8 @@ public class FleuryAlgorithmTest {
         edge7 = undirectedEdge(vertex4, vertex3, 1);
         edge8 = undirectedEdge(vertex4, vertex5, 1);
 
-        Set<Edge<Integer,String>> edges = new HashSet<Edge<Integer,String>>(Arrays.asList(edge1, edge2, edge3, edge4, edge5, edge6, edge7, edge8));
-        Set<Vertex<String>> vertices = new HashSet<Vertex<String>>(Arrays.asList(vertex1, vertex2, vertex3, vertex4, vertex5));
+        edges = new HashSet<Edge<Integer,String>>(Arrays.asList(edge1, edge2, edge3, edge4, edge5, edge6, edge7, edge8));
+        vertices = new HashSet<Vertex<String>>(Arrays.asList(vertex1, vertex2, vertex3, vertex4, vertex5));
 
         graph = Graphs.graph(edges, vertices);
 	}
@@ -56,5 +58,38 @@ public class FleuryAlgorithmTest {
         assertEquals(graph.edges().size(), path1.size());
         // Haus vom Nikolaus has no EulerCycle
         assertFalse(graph.isEuler());
+        
+        // Graph with eulercycle
+        Vertex<String> vertex6;
+        Edge<Integer, String> edge9, edge10, edge11;
+        
+        vertex1 = vertex("vertex1");
+        vertex2 = vertex("vertex2");
+        vertex3 = vertex("vertex3");
+        vertex4 = vertex("vertex4");
+        vertex5 = vertex("vertex5");
+        vertex6 = vertex("vertex6");
+
+        edge1 = undirectedEdge(vertex1, vertex2, 1);
+        edge2 = undirectedEdge(vertex1, vertex3, 1);
+        edge3 = undirectedEdge(vertex1, vertex4, 1);
+        edge4 = undirectedEdge(vertex3, vertex2, 1);
+        edge5 = undirectedEdge(vertex2, vertex4, 1);
+        edge6 = undirectedEdge(vertex1, vertex5, 1);
+        edge7 = undirectedEdge(vertex2, vertex5, 1);
+        edge8 = undirectedEdge(vertex4, vertex5, 1);
+        edge9 = undirectedEdge(vertex5, vertex6, 1);
+        edge10 = undirectedEdge(vertex3, vertex6, 1);
+        edge11 = undirectedEdge(vertex3, vertex4, 1);
+        
+        edges = new HashSet<Edge<Integer,String>>(Arrays.asList(edge1, edge2, edge3, edge4, edge5, edge6, edge7, edge8, edge9, edge10, edge11));
+        vertices = new HashSet<Vertex<String>>(Arrays.asList(vertex1, vertex2, vertex3, vertex4, vertex5, vertex6));
+
+        graph = Graphs.graph(edges, vertices);
+        assertTrue(graph.isEuler());
+        
+        List<Edge<Object, Object>> path2 = fleuryPath(graph);
+        assertFalse(path2.isEmpty());
+        assertEquals(graph.edges().size(), path2.size());
 	}
 }
