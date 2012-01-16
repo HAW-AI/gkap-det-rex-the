@@ -1,11 +1,13 @@
 package com.github.haw.ai.gkap.algorithms.test;
 
+import static com.github.haw.ai.gkap.algorithms.FleuryAlgorithm.fleuryPath;
 import static com.github.haw.ai.gkap.graph.Graphs.undirectedEdge;
 import static com.github.haw.ai.gkap.graph.Graphs.vertex;
 import static org.junit.Assert.*;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.junit.Before;
@@ -47,12 +49,7 @@ public class FleuryAlgorithmTest {
 
 	@Test
 	public void testFleuryAlgorithm() {
-		fail("Not yet implemented");
+        List<Vertex<String>> path1 = fleuryPath(graph);
+        assertTrue(path1.isEmpty());
 	}
-
-	@Test
-	public void testRunAlgorithm() {
-		fail("Not yet implemented");
-	}
-
 }

@@ -10,25 +10,22 @@ import com.github.haw.ai.gkap.graph.Vertex;
 
 public class FleuryAlgorithm<E,V> {
 	private Graph<E, V> graph;
-	private List<Edge<E, V>> marked;
+	private List<Vertex<V>> path;
 	
-	/**
-	 * 1. Wähle einen beliebigen Knoten als aktuellen Knoten.
-	 * 2. Wähle unter den unmarkierten, mit dem aktuellen Knoten inzidenten Kanten 
-	 * 	    eine beliebige Kante aus. Dabei sind zuerst Kanten zu wählen, die im 
-	 *      unmarkierten Graphen keine Brückenkanten sind.
-	 * 3. Markiere die gewählte Kante und füge sie der Kantenfolge hinzu.
-	 * 4. Wähle den anderen Knoten der gewählten Kante als neuen aktuellen Knoten.
-	 * 5. Wenn noch unmarkierte Kanten existieren, dann gehe zu Schritt 2.
-	 */
+	public static <E, V> List<Vertex<V>> fleuryPath(Graph graph) {
+		FleuryAlgorithm<E, V> result = new FleuryAlgorithm<E, V>(graph);
+		result.runAlgorithm();
+		return result.path();
+	}
 	
 	public FleuryAlgorithm(Graph<E,V> graph) {
 		this.graph = graph;
 	}
 	public void runAlgorithm() {
-		this.marked = new ArrayList<Edge<E,V>>();
+		HashSet<Edge<E, V>> marked = new HashSet<Edge<E,V>>();
 		Set<Edge<E,V>> unbridged = null;
 		Set<Edge<E,V>> incidented = null;
+		this.path = new ArrayList<Vertex<V>>();
 		Edge<E,V> edge = null;
 		
 		if (graph.vertices().isEmpty()) return; 
@@ -53,12 +50,13 @@ public class FleuryAlgorithm<E,V> {
 			// 3. Markiere die gewählte Kante und füge sie der Kantenfolge hinzu.
 			marked.add(edge);
 			// 4. Wähle den anderen Knoten der gewählten Kante als neuen aktuellen Knoten.
+			this.path.add(current);
 			current = edge.otherVertex(current);
 		} 
 	}
 	
-	public List<Edge<E, V>> path() {
-		return this.marked;
+	public List<Vertex<V>> path() {
+		return this.path;
 	}
 	
 	private Set<Edge<E,V>> unbridged(Set<Edge<E,V>> edges) {
