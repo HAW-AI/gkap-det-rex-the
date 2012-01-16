@@ -1,14 +1,16 @@
 package com.github.haw.ai.gkap.algorithms;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
-
+import java.util.List;
 import com.github.haw.ai.gkap.graph.Edge;
 import com.github.haw.ai.gkap.graph.Graph;
 import com.github.haw.ai.gkap.graph.Vertex;
 
 public class FleuryAlgorithm<E,V> {
 	private Graph<E, V> graph;
+	private List<Edge<E, V>> marked;
 	
 	/**
 	 * 1. Wähle einen beliebigen Knoten als aktuellen Knoten.
@@ -24,7 +26,7 @@ public class FleuryAlgorithm<E,V> {
 		this.graph = graph;
 	}
 	public void runAlgorithm() {
-		Set<Edge<E,V>> marked = new HashSet<Edge<E,V>>();
+		this.marked = new ArrayList<Edge<E,V>>();
 		Set<Edge<E,V>> unbridged = null;
 		Set<Edge<E,V>> incidented = null;
 		Edge<E,V> edge = null;
@@ -53,6 +55,10 @@ public class FleuryAlgorithm<E,V> {
 			// 4. Wähle den anderen Knoten der gewählten Kante als neuen aktuellen Knoten.
 			current = edge.otherVertex(current);
 		} 
+	}
+	
+	public List<Edge<E, V>> path() {
+		return this.marked;
 	}
 	
 	private Set<Edge<E,V>> unbridged(Set<Edge<E,V>> edges) {
