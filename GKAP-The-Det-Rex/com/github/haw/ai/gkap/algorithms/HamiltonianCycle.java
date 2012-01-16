@@ -3,9 +3,7 @@ package com.github.haw.ai.gkap.algorithms;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Stack;
 
 import com.github.haw.ai.gkap.graph.*;
