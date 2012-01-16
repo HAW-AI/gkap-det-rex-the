@@ -35,7 +35,7 @@ public class FleuryAlgorithm<E,V> {
 		Vertex<V> current = graph.vertices().iterator().next();
 		
 		// 5. Wenn noch unmarkierte Kanten existieren, dann gehe zu Schritt 2.
-		while (marked.size() < graph.vertices().size()) {
+		while (marked.size() < graph.edges().size()) {
 			// 2. Wähle unter den unmarkierten, mit dem aktuellen Knoten inzidenten 
 			// Kanten eine beliebige Kante aus. Dabei sind zuerst Kanten zu wählen, 
 			// die im unmarkierten Graphen keine Brückenkanten sind.
@@ -46,7 +46,14 @@ public class FleuryAlgorithm<E,V> {
 				edge = unbridged.iterator().next();
 			}
 			else {
-				edge = incidented.iterator().next();
+				if (incidented.iterator().hasNext()) {
+					edge = incidented.iterator().next();
+				}
+				else {
+					System.out.println("sorry, no edge left");
+					System.out.println(path);
+					System.exit(-1);
+				}
 			}
 			// 3. Markiere die gewählte Kante und füge sie der Kantenfolge hinzu.
 			marked.add(edge);
