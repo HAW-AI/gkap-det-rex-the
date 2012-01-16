@@ -11,6 +11,7 @@ import com.github.haw.ai.gkap.graph.Vertex;
 public class FleuryAlgorithm<E,V> {
 	private Graph<E, V> graph;
 	private List<Vertex<V>> path;
+	private HashSet<Edge<E, V>> marked;
 	
 	public static <E, V> List<Vertex<V>> fleuryPath(Graph graph) {
 		FleuryAlgorithm<E, V> result = new FleuryAlgorithm<E, V>(graph);
@@ -22,7 +23,7 @@ public class FleuryAlgorithm<E,V> {
 		this.graph = graph;
 	}
 	public void runAlgorithm() {
-		HashSet<Edge<E, V>> marked = new HashSet<Edge<E,V>>();
+		this.marked = new HashSet<Edge<E,V>>();
 		Set<Edge<E,V>> unbridged = null;
 		Set<Edge<E,V>> incidented = null;
 		this.path = new ArrayList<Vertex<V>>();
@@ -55,8 +56,8 @@ public class FleuryAlgorithm<E,V> {
 		} 
 	}
 	
-	public List<Vertex<V>> path() {
-		return this.path;
+	public HashSet<Edge<E, V>> path() {
+		return this.marked;
 	}
 	
 	private Set<Edge<E,V>> unbridged(Set<Edge<E,V>> edges) {
