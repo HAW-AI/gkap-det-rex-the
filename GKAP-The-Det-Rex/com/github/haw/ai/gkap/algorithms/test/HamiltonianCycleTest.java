@@ -15,9 +15,9 @@ import org.junit.Test;
 import com.github.haw.ai.gkap.graph.*;
 import static com.github.haw.ai.gkap.graph.Graphs.*;
 
-import static com.github.haw.ai.gkap.algorithms.HamiltonianPath.hamiltonianPath;
+import static com.github.haw.ai.gkap.algorithms.HamiltonianCycle.hamiltonianCycle;
 
-public class HamiltonianPathTest {
+public class HamiltonianCycleTest {
 
     Graph<String, String> graph;
     Graph<String, String> graph1;
@@ -45,15 +45,15 @@ public class HamiltonianPathTest {
     }
 
     @Test
-    public void testHamiltonianPath() {
-        List<Vertex<String>> path = hamiltonianPath(graph);
-        assertValid(path, graph);
+    public void testHamiltonianCycle() {
+        List<Vertex<String>> cycle = hamiltonianCycle(graph);
+        assertValid(cycle, graph);
         
-        List<Vertex<String>> path1 = hamiltonianPath(graph1);
-        assertValid(path1, graph1);
+        List<Vertex<String>> cycle1 = hamiltonianCycle(graph1);
+        assertValid(cycle1, graph1);
 
-        List<Vertex<String>> path2 = hamiltonianPath(graph2);
-        assertValid(path2, graph2);
+        List<Vertex<String>> cycle2 = hamiltonianCycle(graph2);
+        assertValid(cycle2, graph2);
     }
     
     private <E,V> void assertValid(List<Vertex<V>> cycle, Graph<E,V> graph) {

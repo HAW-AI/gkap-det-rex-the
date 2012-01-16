@@ -10,7 +10,7 @@ import java.util.Stack;
 
 import com.github.haw.ai.gkap.graph.*;
 
-public class HamiltonianPath {
+public class HamiltonianCycle {
     private static class Pair<T,U> {
         public final T _1;
         public final U _2;
@@ -26,16 +26,16 @@ public class HamiltonianPath {
     }
     
     /**
-     * Find a hamiltonian path in a given graph.
-     * If a path is found hamiltonianPath(g).size() == g.vertices().size()+1
-     * because the first and last element of the path are connected
+     * Find a hamiltonian cycle in a given graph.
+     * If a path is found hamiltonianCycle(g).size() == g.vertices().size()+1
+     * because the first and last element of the cycle are connected
      * (start==finish) (but if g.vertices().size()==1 then
-     * hamiltonianPath(g).size()==1 too).
+     * hamiltonianCycle(g).size()==1 too).
      * 
      * @param graph a graph
-     * @return the found hamiltonian path or an empty path if not found.
+     * @return the found hamiltonian cycle or an empty path if not found.
      */
-    public static <V> List<Vertex<V>> hamiltonianPath(Graph<?, V> graph) {
+    public static <V> List<Vertex<V>> hamiltonianCycle(Graph<?, V> graph) {
         List<Vertex<V>> vs = new ArrayList<Vertex<V>>(graph.vertices());
         
         if (vs.size() <= 1) {
@@ -43,49 +43,49 @@ public class HamiltonianPath {
         }
         
         // Pair< NeighborList, CurrentNeighborIndex >
-        Stack<Pair<List<Vertex<V>>, Integer>> path =
+        Stack<Pair<List<Vertex<V>>, Integer>> cycle =
             new Stack<Pair<List<Vertex<V>>,Integer>>();
         
         // begin at random vertex
-        path.push(pair(list(vs), 0));
+        cycle.push(pair(list(vs), 0));
         
         Vertex<V> root = vs.get(0);
         
-        while (!(path.size() == vs.size() &&
-               graph.isAdjacent(root, path.peek()._1.get(path.peek()._2))))
+        while (!(cycle.size() == vs.size() &&
+               graph.isAdjacent(root, cycle.peek()._1.get(cycle.peek()._2))))
         {
-            List<Vertex<V>> neighbors = path.peek()._1;
-            int idx = path.peek()._2;
+            List<Vertex<V>> neighbors = cycle.peek()._1;
+            int idx = cycle.peek()._2;
             Vertex<V> curNeighbor = neighbors.get(idx);
             
             List<Vertex<V>> nextNeighbors = list(graph.adjacent(curNeighbor));
             boolean foundNext = false;
             for (int i = 0; i < nextNeighbors.size() && !foundNext; ++i) {
                 Vertex<V> nextNeigbor = nextNeighbors.get(i);
-                if (!containsVertex(path, nextNeigbor)) {
-                    path.push(pair(nextNeighbors, i));
+                if (!containsVertex(cycle, nextNeigbor)) {
+                    cycle.push(pair(nextNeighbors, i));
                     foundNext = true;
                 }
             }
             
             while (!foundNext) {
                 // unwind and continue at previous level
-                if (idx+1 < neighbors.size() && !containsVertex(path, neighbors.get(idx+1))) {
-                    path.pop();
-                    path.push(pair(neighbors, idx+1));
+                if (idx+1 < neighbors.size() && !containsVertex(cycle, neighbors.get(idx+1))) {
+                    cycle.pop();
+                    cycle.push(pair(neighbors, idx+1));
                     foundNext = true;
-                } else if (path.isEmpty()) {
+                } else if (cycle.isEmpty()) {
                     return new ArrayList<Vertex<V>>();
                 } else {
-                    path.pop();
+                    cycle.pop();
                 }
             }
         }
         
-        List<Vertex<V>> list = new ArrayList<Vertex<V>>(path.size()+1);
+        List<Vertex<V>> list = new ArrayList<Vertex<V>>(cycle.size()+1);
         list.add(root); // root occurs in first and last position of the path
-        while (!path.empty()) {
-            Pair<List<Vertex<V>>, Integer> entry = path.pop();
+        while (!cycle.empty()) {
+            Pair<List<Vertex<V>>, Integer> entry = cycle.pop();
             list.add(entry._1.get(entry._2));
         }
         Collections.reverse(list);
