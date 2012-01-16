@@ -2,6 +2,7 @@ package com.github.haw.ai.gkap.algorithms.test;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -46,13 +47,38 @@ public class HamiltonianPathTest {
     @Test
     public void testHamiltonianPath() {
         List<Vertex<String>> path = hamiltonianPath(graph);
-        assertTrue(path.containsAll(graph.vertices()) && path.size() == graph.vertices().size()+1);
+        assertValid(path, graph);
         
         List<Vertex<String>> path1 = hamiltonianPath(graph1);
-        assertTrue(path1.isEmpty());
+        assertValid(path1, graph1);
 
         List<Vertex<String>> path2 = hamiltonianPath(graph2);
-        assertEquals(1, path2.size());
+        assertValid(path2, graph2);
+    }
+    
+    private <E,V> void assertValid(List<Vertex<V>> cycle, Graph<E,V> graph) {
+        // no path found? still valid
+        if (cycle.isEmpty())
+            return;
+        
+        List<Vertex<V>> vs = new ArrayList<Vertex<V>>(graph.vertices());
+        
+        assertTrue(cycle.containsAll(vs));
+        
+        if (cycle.size() <= 1) {
+            assertEquals(vs.size(), cycle.size());
+        } else {
+            assertEquals(cycle.get(0), cycle.get(cycle.size()-1));
+            
+            List<Vertex<V>> path = new ArrayList<Vertex<V>>(cycle);
+            path.remove(0);
+            assertTrue(vs.containsAll(path));
+            assertEquals(vs.size()+1, cycle.size());
+        }
+        
+        for (int i = 0; i < vs.size()-1; ++i) {
+            assertTrue(graph.adjacent(vs.get(i)).contains(vs.get(i+1)));
+        }
     }
 
 }
