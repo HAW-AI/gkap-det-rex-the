@@ -91,5 +91,10 @@ public class FleuryAlgorithmTest {
         List<Edge<Object, Object>> path2 = fleuryPath(graph);
         assertFalse(path2.isEmpty());
         assertEquals(graph.edges().size(), path2.size());
+        // the first vertex should be equal to the vertex in the last edge
+        Set<Vertex> startend = new HashSet<Vertex>();
+        startend.addAll(path2.get(0).vertices());
+        startend.retainAll(path2.get(path2.size() - 1).vertices());
+        assertTrue(startend.size() == 1);
 	}
 }
