@@ -25,6 +25,17 @@ public class HamiltonianCycle {
     }
     
     public static <E,V> Pair<List<Vertex<V>>, Stats<E, V>> loggedHamiltonianCycle(Graph<E, V> graph) {
+        // Algorithm from http://en.wikipedia.org/wiki/Hamiltonian_path_problem
+        //
+        // A trivial heuristic algorithm for locating Hamiltonian paths is to
+        // construct a path abc... and extend it until no longer possible; when
+        // the path abc...xyz cannot be extended any longer because all
+        // neighbours of z already lie in the path, one goes back one step,
+        // removing the edge yz and extending the path with a different
+        // neighbour of y; if no choice produces a Hamiltonian path, then one
+        // takes a further step back, removing the edge xy and extending the
+        // path with a different neighbour of x, and so on.
+        
         long start = System.currentTimeMillis();
         AccessStats<E, V> stats = new AccessStats<E, V>();
         
